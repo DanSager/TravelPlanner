@@ -22,12 +22,11 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    Trip t = new Trip();
     final Date datee = new Date();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeSelector();
+        themeSelector();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,43 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 /*Toast.makeText(getApplicationContext(), "STRING MESSAGE", Toast.LENGTH_LONG).show();
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show(); */
-                testTrip();
             }
         });
-
-
-        CalendarView myCal = (CalendarView) findViewById(R.id.calendarView);
-        myCal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                String date =  i + "/" + (i1 + 1) + "/" + i2;
-                Log.i("myTag",date);
-                datee.setMonth(i +1);
-                datee.setYear(i2);
-            }
-        });
-
-
-    }
-
-    private void ThemeSelector() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = pref.getString("pref_app_color","Default");
-        if (color.equals("Teal")) {
-            setTheme(R.style.AppTheme);
-        } else if (color.equals("Red")) {
-            setTheme(R.style.RedStyle);
-        } else if (color.equals("Orange")) {
-            setTheme(R.style.OrangeStyle);
-        } else if (color.equals("Yellow")) {
-            setTheme(R.style.YellowStyle);
-        } else if (color.equals("Green")) {
-            setTheme(R.style.GreenStyle);
-        } else if (color.equals("Blue")) {
-            setTheme(R.style.BlueStyle);
-        } else if (color.equals("Purple")) {
-            setTheme(R.style.PurpleStyle);
-        }
 
     }
 
@@ -108,20 +72,31 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
             return true;
+        } else if (id == R.id.action_test_platform) {
+            Intent intent = new Intent(MainActivity.this, TestPlatform.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void testTrip() {
-
-        t.setName("Spain");
-        t.setMoneySpent(120);
-        t.setStartDate(datee);
-
-        Log.i("myTag", "Name: " + t.getName() + ", Money Lost: " + t.getMoneySpent() + ", Date Start: " + t.getStartDate());
-
+    private void themeSelector() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String color = pref.getString("pref_app_color","Default");
+        if (color.equals("Teal")) {
+            setTheme(R.style.AppTheme);
+        } else if (color.equals("Red")) {
+            setTheme(R.style.RedStyle);
+        } else if (color.equals("Orange")) {
+            setTheme(R.style.OrangeStyle);
+        } else if (color.equals("Yellow")) {
+            setTheme(R.style.YellowStyle);
+        } else if (color.equals("Green")) {
+            setTheme(R.style.GreenStyle);
+        } else if (color.equals("Blue")) {
+            setTheme(R.style.BlueStyle);
+        } else if (color.equals("Purple")) {
+            setTheme(R.style.PurpleStyle);
+        }
 
     }
 }
-
-

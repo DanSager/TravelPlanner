@@ -40,6 +40,17 @@
 
         </ListPreference>
 
+        <SwitchPreference
+            android:key="pref_app_date_format"
+            android:title="@string/pref_app_date_format"
+            android:summaryOff="MM/DD/YYYY"
+            android:summaryOn="DD/MM/YYYY"
+            android:switchTextOff="switchTextOff"
+            android:switchTextOn="switchTextOn"
+            >
+
+        </SwitchPreference>
+
 
 
     </PreferenceCategory>

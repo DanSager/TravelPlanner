@@ -27,6 +27,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.dansager.travelplanner.MainActivity" />
         </activity>
+        <activity
+            android:name=".TestPlatform"
+            android:label="Travel Planner Testing">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.github.dansager.travelplanner.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>
