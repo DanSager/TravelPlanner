@@ -3,7 +3,7 @@ package io.github.dansager.travelplanner.data_structures;
 import java.util.Date;
 
 public class Trip {
-    private String Name;
+    private String Name = "";
     private int MoneySpent = 0;
     private Date startDate;
     private Date endDate;
