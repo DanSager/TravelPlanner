@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#ffff</color>
     <color name="primaryColor">#26c6da</color>
     <color name="primaryLightColor">#641111</color>
     <color name="primaryDarkColor">#0095a8</color>
@@ -32,5 +33,10 @@
     <color name="accent_material_purple">#5d0f8b</color>
     <color name="primary_material_purple">#5d0f8b</color>
 
-
+    <color name="popupone">#3F51B5</color>
+    <color name="popuptwo">#2f333f</color>
+    <color name="popupthree">#49acd5</color>
+    <color name="popupfour">#45bc62</color>
+    <color name="popupfive">#eaad43</color>
+    <color name="popupsix">#ff4081</color>
 </resources>

@@ -1,7 +1,12 @@
 package io.github.dansager.travelplanner;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -15,34 +20,100 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.Date;
+
+import io.github.dansager.travelplanner.data_structures.Trip;
 
 public class MainActivity extends AppCompatActivity {
 
-    final Date datee = new Date();
+    //final Date datee = new Date();
+    //Trip newTrip = new Trip();
+    private DatePickerDialog.OnDateSetListener startDateListener;
+    private TextView startDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         themeSelector();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_new_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                /*Toast.makeText(getApplicationContext(), "STRING MESSAGE", Toast.LENGTH_LONG).show();
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show(); */
+                createDialogWindow();
             }
         });
 
+    }
+
+    public void createDialogWindow () {
+        Dialog create_window = new Dialog(MainActivity.this);
+
+        create_window.setContentView(R.layout.create_trip_popup);
+        create_window.getWindow();
+        create_window.show();
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        final Boolean dateFormat = pref.getBoolean("pref_app_date_format",false);   //Default/false = mm/dd/yyyy
+
+        startDate = (TextView) create_window.findViewById(R.id.create_start_date);
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(MainActivity.this,android.R.style.Theme_Holo_Light_Dialog_MinWidth, startDateListener, year,month,day);
+                dialog.getWindow();
+                dialog.show();
+            }
+        });
+
+        startDateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                if (dateFormat == false) {
+                    Toast.makeText(MainActivity.this, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "onDateSet: dd/mm/yyy: " + day + "/" + month + "/" + year, Toast.LENGTH_SHORT).show();
+                }
+
+                String date;
+                if (dateFormat == false) {
+                    date = month + "/" + day + "/" + year;
+                } else {
+                    date = day + "/" + month + "/" + year;
+                }
+                startDate.setText(date);
+
+
+//                Date testStartDate = new Date(year, month, day);
+//                if (newTrip.getStartDate() == null) {
+//                    newTrip.setStartDate(testStartDate);
+//                } else {
+//                    newTrip.setEndDate(testStartDate);
+//                    if (testStartDate.after(newTrip.getStartDate())) {
+//                        Toast.makeText(MainActivity.this, "DATES IN CORRECT ORDER", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(MainActivity.this, "DATES IN WRONG ORDER", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//
+//                }
+
+
+            }
+        };
     }
 
     @Override
@@ -97,6 +168,5 @@ public class MainActivity extends AppCompatActivity {
         } else if (color.equals("Purple")) {
             setTheme(R.style.PurpleStyle);
         }
-
     }
 }

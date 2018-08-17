@@ -35,7 +35,6 @@ public class TestPlatform extends AppCompatActivity {
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         final Boolean dateFormat = pref.getBoolean("pref_app_date_format",false);               //Default/false = mm/dd/yyyy
-        Toast.makeText(TestPlatform.this,dateFormat.toString(),Toast.LENGTH_SHORT).show();
 
         mDisplayDate = (TextView) findViewById(R.id.start_date);
 

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="325dp"
+    android:layout_height="475dp"
+    android:padding="5dp"
+    android:layout_gravity="center"
+    android:background="@color/popuptwo"
+    >
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_window_heading"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="30sp"/>
+
+    <EditText
+        android:id="@+id/create_trip_name"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_window_name_hint"
+        android:inputType="text"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/create_start_date"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_window_start_date_hint"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/create_end_date"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_window_end_date_hint"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        />
+
+
+</LinearLayout>
