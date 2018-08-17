@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#26c6da</color>
+    <color name="primaryLightColor">#641111</color>
+    <color name="primaryDarkColor">#0095a8</color>
+
+    <color name="primary_accent_blue">#2535b4</color>
+    <color name="primary_dark_material_blue">#0e1964</color>
+    <color name="colorPrimaryDark">#303f9f</color>
+    <color name="accent_material">#009999</color>
+    <color name="primary_dark_material_dark">#000000</color>
+    <color name="primary_material">#009999</color>
+
+    <color name="accent_material_red">#c20a16</color>
+    <color name="primary_material_red">#c20a16</color>
+
+    <color name="accent_material_orange">#ba6a00</color>
+    <color name="primary_material_orange">#ba6a00</color>
+
+    <color name="accent_material_yellow">#c6cc11</color>
+    <color name="primary_material_yellow">#c6cc11</color>
+
+    <color name="accent_material_green">#16780f</color>
+    <color name="primary_material_green">#16780f</color>
+
+    <color name="accent_material_teal">#009999</color>
+    <color name="primary_material_teal">#009999</color>
+
+    <color name="accent_material_blue">#0614d1</color>
+    <color name="primary_material_blue">#0614d1</color>
+
+    <color name="accent_material_purple">#5d0f8b</color>
+    <color name="primary_material_purple">#5d0f8b</color>
+
+
+</resources>
