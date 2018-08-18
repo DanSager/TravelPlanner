@@ -35,6 +35,7 @@
                 android:value="io.github.dansager.travelplanner.MainActivity" />
         </activity>
 
+
     </application>
 
 </manifest>
