@@ -6,23 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".TestPlatform">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ListView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Set Start Date"
-        android:id="@+id/start_date"
-        android:layout_marginTop="50dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp"/>
+        android:id="@+id/listView"
+        >
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Set End Date"
-        android:id="@+id/end_date"
-        android:layout_marginTop="100dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="30dp"/>
+
+    </ListView>
 
 </RelativeLayout>

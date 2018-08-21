@@ -15,8 +15,6 @@ import android.widget.Toast;
 
 public class SettingActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    //MainActivity mainA = new MainActivity();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,4 +106,5 @@ public class SettingActivity extends PreferenceActivity implements SharedPrefere
         }
 
     }
+
 }

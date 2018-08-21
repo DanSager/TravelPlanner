@@ -1,12 +1,10 @@
 package io.github.dansager.travelplanner.data_structures;
 
-import java.util.Date;
-
 public class Trip {
     private String Name = "";
     private int MoneySpent = 0;
-    private Date startDate;
-    private Date endDate;
+    private DateInfo startDate;
+    private DateInfo endDate;
 
     public String setName (String s) {
         return Name = s;
@@ -16,10 +14,10 @@ public class Trip {
         return MoneySpent = i;
     }
 
-    public Date setStartDate (Date d) {
+    public DateInfo setStartDate (DateInfo d) {
         return startDate = d;
     }
-    public Date setEndDate (Date d) {
+    public DateInfo setEndDate (DateInfo d) {
         return endDate = d;
     }
 
@@ -31,10 +29,10 @@ public class Trip {
         return Name;
     }
 
-    public Date getStartDate () {
+    public DateInfo getStartDate () {
         return startDate;
     }
-    public Date getEndDate () {
+    public DateInfo getEndDate () {
         return endDate;
     }
 }

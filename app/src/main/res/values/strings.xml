@@ -54,4 +54,10 @@
     <string name="create_window_name_hint">Trip Name</string>
     <string name="create_window_start_date_hint">Start Date</string>
     <string name="create_window_end_date_hint">End Date</string>
+
+    <!-- Strings Related to ListView -->
+
+    <string name="list_view_name">Example Name Text</string>
+    <string name="list_view_description">Example Discription</string>
+
 </resources>
