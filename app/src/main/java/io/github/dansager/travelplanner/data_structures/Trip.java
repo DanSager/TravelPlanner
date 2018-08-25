@@ -1,13 +1,19 @@
 package io.github.dansager.travelplanner.data_structures;
 
 public class Trip {
-    private String Name = "";
-    private int MoneySpent = 0;
+    private String name = "";
     private DateInfo startDate;
     private DateInfo endDate;
+    private int MoneySpent = 0;
+
+    public Trip(String name,DateInfo startDate,DateInfo endDate) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public String setName (String s) {
-        return Name = s;
+        return name = s;
     }
 
     public int setMoneySpent (int i) {
@@ -26,7 +32,7 @@ public class Trip {
     }
 
     public String getName () {
-        return Name;
+        return name;
     }
 
     public DateInfo getStartDate () {

@@ -31,8 +31,6 @@ public class TestPlatform extends AppCompatActivity {
         CustomAdapter ca = new CustomAdapter();
 
         testListView.setAdapter(ca);
-
-
     }
 
     class CustomAdapter extends BaseAdapter {

@@ -1,13 +1,19 @@
 package io.github.dansager.travelplanner.data_structures;
 
 public class DateInfo {
-    private int Month;
-    private int Day;
-    private int Year;
+    private int month;
+    private int day;
+    private int year;
+    
+    public DateInfo(int month,int day, int year) {
+        this.month = month;
+        this.day = day;
+        this.year = year;
+    }
 
     public boolean setMonth (int i) {
         if (i > 0 && i < 13) {
-            Month = i;
+            month = i;
             return true;
         }
         return false;
@@ -15,7 +21,7 @@ public class DateInfo {
 
     public boolean setDay (int i) {
         if (i > 0 && i < 32) {
-            Day = i;
+            day = i;
             return true;
         }
         return false;
@@ -23,30 +29,30 @@ public class DateInfo {
 
     public boolean setYear (int i) {
         if (i > 1970 && i < 2100) {
-            Year = i;
+            year = i;
             return true;
         }
         return false;
     }
 
     public int getMonth () {
-        return Month;
+        return month;
     }
 
     public int getDay () {
-        return Day;
+        return day;
     }
 
     public int getYear () {
-        return Year;
+        return year;
     }
 
     public String getMonthDayYear () {
-        return Month + "/" + Day + "/" + Year;
+        return month + "/" + day + "/" + year;
     }
 
     public String getDayMonthYear () {
-        return Day + "/" + Month + "/" + Year;
+        return day + "/" + month + "/" + year;
     }
 
     public boolean beforeDate (DateInfo a) {

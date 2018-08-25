@@ -3,10 +3,13 @@ package io.github.dansager.travelplanner;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,12 +31,14 @@ import io.github.dansager.travelplanner.data_structures.Trip;
 
 public class CreateTrip {
 
+    MainActivity mainActivity;
+
     private DatePickerDialog.OnDateSetListener startDateTextListener;
     private DatePickerDialog.OnDateSetListener endDateTextListener;
     private TextView startDateText;
     private TextView endDateText;
-    private DateInfo tripStartDate = new DateInfo();
-    private DateInfo tripEndDate = new DateInfo();
+    DateInfo tripStartDate;
+    DateInfo tripEndDate;
 
     public void createDialogWindow (final Context context) {
         Dialog create_window = new Dialog(context);
@@ -65,9 +70,7 @@ public class CreateTrip {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month++;
-                tripStartDate.setMonth(month);
-                tripStartDate.setDay(day);
-                tripStartDate.setYear(year);
+                tripStartDate = new DateInfo(month,day,year);
 
                 if (dateFormat == false) {
                     startDateText.setText(tripStartDate.getMonthDayYear());
@@ -97,9 +100,7 @@ public class CreateTrip {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month++;
-                tripEndDate.setMonth(month);
-                tripEndDate.setDay(day);
-                tripEndDate.setYear(year);
+                tripEndDate = new DateInfo(month,day,year);
 
                 if (dateFormat == false) {
                     endDateText.setText(tripEndDate.getMonthDayYear());
@@ -147,10 +148,7 @@ public class CreateTrip {
                     Type type = new TypeToken<ArrayList<Trip>>(){}.getType();
                     List<Trip> tripList = gson.fromJson(json, type);
 
-                    Trip newTrip = new Trip();
-                    newTrip.setName(name);
-                    newTrip.setStartDate(tripStartDate);
-                    newTrip.setEndDate(tripEndDate);
+                    Trip newTrip = new Trip(name,tripStartDate,tripEndDate);
 
                     if (tripList == null) {
                         tripList = new ArrayList<Trip>();
@@ -166,6 +164,7 @@ public class CreateTrip {
                     prefEditor.commit();
 
                     create_window.dismiss();
+                    mainActivity.updateAdapter(tripList);
                 }
             }
         });

@@ -7,30 +7,31 @@
     android:background="@drawable/text_block"
     >
 
-    <TextView
-        android:id="@+id/text_list_view_item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="1dp"
-        android:paddingTop="10dp"
-        android:paddingStart="25dp"
-        android:paddingEnd="25dp"
-        android:text="@string/list_view_name"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#ffffff" />
+        <TextView
+            android:id="@+id/text_list_view_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="1dp"
+            android:paddingTop="10dp"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="@string/list_view_name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff" />
 
-    <TextView
-        android:id="@+id/text_list_view_item_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="15dp"
-        android:paddingTop="4dp"
-        android:paddingStart="25dp"
-        android:paddingEnd="25dp"
-        android:text="@string/list_view_description"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:textColor="#808080" />
+        <TextView
+            android:id="@+id/text_list_view_item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+            android:paddingTop="4dp"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="@string/list_view_description"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#808080" />
+
 
 </LinearLayout>
