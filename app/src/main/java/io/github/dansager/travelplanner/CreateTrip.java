@@ -164,6 +164,7 @@ public class CreateTrip {
                     prefEditor.commit();
 
                     create_window.dismiss();
+                    //mainActivity.displayTrips();
                     mainActivity.updateAdapter(tripList);
                 }
             }

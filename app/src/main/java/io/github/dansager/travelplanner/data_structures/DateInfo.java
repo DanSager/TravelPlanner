@@ -58,9 +58,9 @@ public class DateInfo {
     public boolean beforeDate (DateInfo a) {
         if (this.getYear() > a.getYear()) {
             return false;
-        } else if (this.getMonth() > a.getMonth()) {
+        } else if (this.getMonth() > a.getMonth() && this.getYear() == a.getYear()) {
             return false;
-        } else if (this.getDay() > a.getDay()) {
+        } else if (this.getDay() > a.getDay() && this.getMonth() == a.getMonth() && this.getYear() == a.getYear()) {
             return false;
         } else {
             return true;

@@ -1,6 +1,5 @@
 package io.github.dansager.travelplanner;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,31 +11,33 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-import io.github.dansager.travelplanner.data_structures.ListComparator;
+import io.github.dansager.travelplanner.data_structures.DateInfo;
 import io.github.dansager.travelplanner.data_structures.Trip;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
     CreateTrip pop = new CreateTrip();
 
     public static List<Trip> tripList;
+    public static List<Trip> upcomingTrips;
+    public static List<Trip> currentTrips;
+    public static List<Trip> previousTrips;
     public static RecyclerView recyclerView;
-
-    public static TripAdapter adapter;
+    public static DateInfo today;
+    public static SectionedRecyclerViewAdapter sectionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
-        Gson gson = new Gson();
-        String json = settings.getString("Trips", "");
-
-        Type type = new TypeToken<List<Trip>>(){}.getType();
-        tripList = gson.fromJson(json, type);
-
-        if (tripList == null) {
-            tripList = new ArrayList<Trip>();
-        }
-
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TripAdapter(this, tripList);
-        recyclerView.setAdapter(adapter);
+        displayTrips();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_new_button);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,15 +73,28 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_stats) {
+            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
+            tripList.clear();
+            upcomingTrips.clear();
+            currentTrips.clear();
+            previousTrips.clear();
+            sectionAdapter.notifyDataSetChanged();
+
+            SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
+            SharedPreferences.Editor prefEditor = settings.edit();
+            Gson gson = new Gson();
+            String json = settings.getString("Trips", "");
+            json = gson.toJson(tripList);
+            prefEditor.putString("Trips", json);
+            prefEditor.commit();
+            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
+
             Toast.makeText(this, "WIP",Toast.LENGTH_LONG).show();
         } else if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(intent);
             finish();
             return true;
-        } else if (id == R.id.action_test_platform) {
-            Intent intent = new Intent(MainActivity.this, TestPlatform.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -119,9 +119,74 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void displayTrips () {
+        SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
+        Gson gson = new Gson();
+        String json = settings.getString("Trips", "");
+
+        Type type = new TypeToken<List<Trip>>(){}.getType();
+        tripList = gson.fromJson(json, type);
+
+        if (tripList == null) {
+            tripList = new ArrayList<Trip>();
+        }
+
+        upcomingTrips = new ArrayList<Trip>();
+        currentTrips = new ArrayList<Trip>();
+        previousTrips = new ArrayList<Trip>();
+
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        String formattedMonth = monthFormat.format(c);
+        String formattedDay = dayFormat.format(c);
+        String formattedYear = yearFormat.format(c);
+        int currentMonth = Integer.parseInt(formattedMonth);
+        int currentDay = Integer.parseInt(formattedDay);
+        int currentYear = Integer.parseInt(formattedYear);
+        today = new DateInfo(currentMonth,currentDay,currentYear);
+
+        for (Trip t : tripList) {
+            if (today.beforeDate(t.getStartDate())) {
+                upcomingTrips.add(t);
+            } else if (t.getEndDate().beforeDate(today)) {
+                previousTrips.add(t);
+            } else {
+                currentTrips.add(t);
+            }
+        }
+
+        sectionAdapter = new SectionedRecyclerViewAdapter();
+
+        sectionAdapter.addSection(new TripSection(this,"Upcoming",upcomingTrips));
+        sectionAdapter.addSection(new TripSection(this,"Current",currentTrips));
+        sectionAdapter.addSection(new TripSection(this,"Previous",previousTrips));
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(sectionAdapter);
+    }
+
     public static void updateAdapter (List<Trip> updatedListTrip) {
         tripList.clear();
         tripList.addAll(updatedListTrip);
-        adapter.notifyDataSetChanged();
+
+        upcomingTrips.clear();
+        currentTrips.clear();
+        previousTrips.clear();
+
+        for (Trip t : tripList) {
+            if (today.beforeDate(t.getStartDate())) {
+                upcomingTrips.add(t);
+            } else if (t.getEndDate().beforeDate(today)) {
+                previousTrips.add(t);
+            } else {
+                currentTrips.add(t);
+            }
+        }
+
+        sectionAdapter.notifyDataSetChanged();
     }
 }
