@@ -13,6 +13,13 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.github.dansager.travelplanner.data_structures.Trip;
+
 public class SettingActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
@@ -27,11 +34,24 @@ public class SettingActivity extends PreferenceActivity implements SharedPrefere
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)  {
         updatePrefSummary(findPreference(key));
 
-        if (key.equals("pref_app_color")) {
-            Intent intent = new Intent(this, SettingActivity.class);
-            finish();
-            startActivity(intent);
-            this.overridePendingTransition(0, 0);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        final Boolean delete_trip = pref.getBoolean("delete_all_trips_pref",false);
+        SharedPreferences.Editor prefEdit = pref.edit();
+
+        if(key.equals("delete_all_trips_pref") && delete_trip) {
+            SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
+            SharedPreferences.Editor prefEditor = settings.edit();
+
+            List<Trip> tripList = new ArrayList<Trip>();
+
+            Gson gson = new Gson();
+            String json = settings.getString("Trips", "");
+            json = gson.toJson(tripList);
+            prefEditor.putString("Trips", json);
+            prefEditor.commit();
+
+            prefEdit.putBoolean("delete_all_trips_pref",false);
+            prefEdit.commit();
         }
     }
 

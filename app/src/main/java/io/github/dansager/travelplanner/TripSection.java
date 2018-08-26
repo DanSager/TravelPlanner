@@ -65,11 +65,11 @@ public class TripSection extends StatelessSection {
         DateTime now = new DateTime();
         if (title.equals("Upcoming")) {
             int hours = Hours.hoursBetween(now,trip.getStartDate()).getHours();
-            int days = hours/24;
+            int days = hours/24 +1;
             if (hours < 24) {
                 String s = Integer.toString(hours);
                 itemHolder.textTime.setText(s + "h");
-            } else if (days < 6) {
+            } else if (days < 7) {
                 String s = Integer.toString(days);
                 itemHolder.textTime.setText(s + "d");
             } else {
@@ -79,17 +79,17 @@ public class TripSection extends StatelessSection {
             }
         } else if (title.equals("Previous")) {
             int hours = Hours.hoursBetween(trip.getEndDate(),now).getHours();
-            int days = hours/24;
+            int days = hours/24 +1;
             if (hours < 24) {
                 String s = Integer.toString(hours);
-                itemHolder.textTime.setText(s + "H");
-            } else if (days < 6) {
+                itemHolder.textTime.setText("-" + s + "H");
+            } else if (days < 7) {
                 String s = Integer.toString(days);
-                itemHolder.textTime.setText(s + "D");
+                itemHolder.textTime.setText("-" + s + "D");
             } else {
                 int weeks = days/7;
                 String s = Integer.toString(weeks);
-                itemHolder.textTime.setText(s + "W");
+                itemHolder.textTime.setText("-" + s + "W");
             }
         } else {
             itemHolder.textTime.setText("");
@@ -97,17 +97,23 @@ public class TripSection extends StatelessSection {
 
         //SETS THE DURATION OF THE TRIP
         int hours = Hours.hoursBetween(trip.getStartDate(),trip.getEndDate()).getHours();
-        int days = hours/24;
+        int days = hours/24 +1;
         int weeks = days/7;
         String h = Integer.toString(hours);
         String d = Integer.toString(days);
         String w = Integer.toString(weeks);
         if (hours < 24) {
             itemHolder.textDuration.setText(h + "H");
-        } else if (days < 6) {
+        } else if (days < 7) {
             itemHolder.textDuration.setText(d + "D" );
         } else {
-            itemHolder.textDuration.setText(w + "W " + d + "D");
+            days = days-(weeks*7);
+            d = Integer.toString(days);
+            if (days == 0) {
+                itemHolder.textDuration.setText(w + "W");
+            } else {
+                itemHolder.textDuration.setText(w + "W " + d + "D");
+            }
         }
 
         //SETS THE MONEY SPENT TEXT OR MAKES IT AND DIVIDER INVISIBLE

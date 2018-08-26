@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //themeSelector();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -124,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
         upcomingTrips = new ArrayList<Trip>();
         currentTrips = new ArrayList<Trip>();
         previousTrips = new ArrayList<Trip>();
-
-        tripList.get(0).setMoneySpent(850);
 
         for (Trip t : tripList) {
             if (t.getStartDate().isBeforeNow() && t.getEndDate().isAfterNow()) {
