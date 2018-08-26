@@ -97,7 +97,7 @@ public class TripSection extends StatelessSection {
 
         //SETS THE DURATION OF THE TRIP
         int hours = Hours.hoursBetween(trip.getStartDate(),trip.getEndDate()).getHours();
-        int days = hours/24 +1;
+        int days = hours/24 + 1;
         int weeks = days/7;
         String h = Integer.toString(hours);
         String d = Integer.toString(days);
