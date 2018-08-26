@@ -8,22 +8,30 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import org.joda.time.DateTime;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import io.github.dansager.travelplanner.data_structures.DateInfo;
+import io.github.dansager.travelplanner.data_structures.DateTimeConverter;
 import io.github.dansager.travelplanner.data_structures.Trip;
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -36,12 +44,11 @@ public class MainActivity extends AppCompatActivity {
     public static List<Trip> currentTrips;
     public static List<Trip> previousTrips;
     public static RecyclerView recyclerView;
-    public static DateInfo today;
     public static SectionedRecyclerViewAdapter sectionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        themeSelector();
+        //themeSelector();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -73,59 +80,42 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_stats) {
-            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
-            tripList.clear();
-            upcomingTrips.clear();
-            currentTrips.clear();
-            previousTrips.clear();
-            sectionAdapter.notifyDataSetChanged();
-
-            SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
-            SharedPreferences.Editor prefEditor = settings.edit();
-            Gson gson = new Gson();
-            String json = settings.getString("Trips", "");
-            json = gson.toJson(tripList);
-            prefEditor.putString("Trips", json);
-            prefEditor.commit();
-            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
+//            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
+//            tripList.clear();
+//            upcomingTrips.clear();
+//            currentTrips.clear();
+//            previousTrips.clear();
+//            sectionAdapter.notifyDataSetChanged();
+//
+//            SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
+//            SharedPreferences.Editor prefEditor = settings.edit();
+//            Gson gson = new Gson();
+//            String json = settings.getString("Trips", "");
+//            json = gson.toJson(tripList);
+//            prefEditor.putString("Trips", json);
+//            prefEditor.commit();
+//            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
 
             Toast.makeText(this, "WIP",Toast.LENGTH_LONG).show();
         } else if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void themeSelector() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = pref.getString("pref_app_color","Default");
-        if (color.equals("Teal")) {
-            setTheme(R.style.AppTheme);
-        } else if (color.equals("Red")) {
-            setTheme(R.style.RedStyle);
-        } else if (color.equals("Orange")) {
-            setTheme(R.style.OrangeStyle);
-        } else if (color.equals("Yellow")) {
-            setTheme(R.style.YellowStyle);
-        } else if (color.equals("Green")) {
-            setTheme(R.style.GreenStyle);
-        } else if (color.equals("Blue")) {
-            setTheme(R.style.BlueStyle);
-        } else if (color.equals("Purple")) {
-            setTheme(R.style.PurpleStyle);
-        }
-    }
-
     public void displayTrips () {
         SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
-        Gson gson = new Gson();
+        final GsonBuilder builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeConverter());
+        final Gson gson = builder.create();
+
         String json = settings.getString("Trips", "");
 
         Type type = new TypeToken<List<Trip>>(){}.getType();
-        tripList = gson.fromJson(json, type);
+         tripList = gson.fromJson(json, type);
 
         if (tripList == null) {
             tripList = new ArrayList<Trip>();
@@ -135,26 +125,15 @@ public class MainActivity extends AppCompatActivity {
         currentTrips = new ArrayList<Trip>();
         previousTrips = new ArrayList<Trip>();
 
-        Date c = Calendar.getInstance().getTime();
-
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-        SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
-        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-        String formattedMonth = monthFormat.format(c);
-        String formattedDay = dayFormat.format(c);
-        String formattedYear = yearFormat.format(c);
-        int currentMonth = Integer.parseInt(formattedMonth);
-        int currentDay = Integer.parseInt(formattedDay);
-        int currentYear = Integer.parseInt(formattedYear);
-        today = new DateInfo(currentMonth,currentDay,currentYear);
+        tripList.get(0).setMoneySpent(850);
 
         for (Trip t : tripList) {
-            if (today.beforeDate(t.getStartDate())) {
-                upcomingTrips.add(t);
-            } else if (t.getEndDate().beforeDate(today)) {
-                previousTrips.add(t);
-            } else {
+            if (t.getStartDate().isBeforeNow() && t.getEndDate().isAfterNow()) {
                 currentTrips.add(t);
+            } else if (t.getStartDate().isAfterNow()) {
+                upcomingTrips.add(t);
+            } else if (t.getEndDate().isBeforeNow()) {
+                previousTrips.add(t);
             }
         }
 
@@ -178,12 +157,12 @@ public class MainActivity extends AppCompatActivity {
         previousTrips.clear();
 
         for (Trip t : tripList) {
-            if (today.beforeDate(t.getStartDate())) {
-                upcomingTrips.add(t);
-            } else if (t.getEndDate().beforeDate(today)) {
-                previousTrips.add(t);
-            } else {
+            if (t.getStartDate().isBeforeNow() && t.getEndDate().isAfterNow()) {
                 currentTrips.add(t);
+            } else if (t.getStartDate().isAfterNow()) {
+                upcomingTrips.add(t);
+            } else if (t.getEndDate().isBeforeNow()) {
+                previousTrips.add(t);
             }
         }
 

@@ -6,7 +6,13 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Hours;
+import org.joda.time.LocalDate;
 
 import java.util.List;
 
@@ -17,7 +23,6 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 public class TripSection extends StatelessSection {
 
     public static Context mCtx;
-
     List<Trip> list;
     String title;
 
@@ -42,17 +47,85 @@ public class TripSection extends StatelessSection {
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
         final Trip trip = list.get(position);
-
         final TripViewHolder itemHolder = (TripViewHolder) holder;
 
+        //SETS THE TRIP NAME TEXT
         itemHolder.textName.setText(trip.getName());
 
+        //SETS THE TRIP START AND END DAY TEXT
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mCtx);
         final Boolean dateFormat = pref.getBoolean("pref_app_date_format",false);   //Default/false = mm/dd/yyyy
-        if (dateFormat == false) {
-            itemHolder.textDesc.setText(trip.getStartDate().getMonthDayYear() + " - " + trip.getEndDate().getMonthDayYear());
-        } else if (dateFormat == true) {
-            itemHolder.textDesc.setText(trip.getStartDate().getDayMonthYear() + " - " + trip.getEndDate().getDayMonthYear());
+        if (dateFormat) {
+            itemHolder.textDesc.setText(trip.getStartDate().toString("d MMM, yyyy") + " - " + trip.getEndDate().toString("d MMM, yyyy"));
+        } else {
+            itemHolder.textDesc.setText(trip.getStartDate().toString("MMM d, yyyy") + " - " + trip.getEndDate().toString("MMM d, yyyy"));
+        }
+
+        //SETS THE TIME SINCE/UNTIL TEXT
+        DateTime now = new DateTime();
+        if (title.equals("Upcoming")) {
+            int hours = Hours.hoursBetween(now,trip.getStartDate()).getHours();
+            int days = hours/24;
+            if (hours < 24) {
+                String s = Integer.toString(hours);
+                itemHolder.textTime.setText(s + "h");
+            } else if (days < 6) {
+                String s = Integer.toString(days);
+                itemHolder.textTime.setText(s + "d");
+            } else {
+                int weeks = days/7;
+                String s = Integer.toString(weeks);
+                itemHolder.textTime.setText(s + "w");
+            }
+        } else if (title.equals("Previous")) {
+            int hours = Hours.hoursBetween(trip.getEndDate(),now).getHours();
+            int days = hours/24;
+            if (hours < 24) {
+                String s = Integer.toString(hours);
+                itemHolder.textTime.setText(s + "H");
+            } else if (days < 6) {
+                String s = Integer.toString(days);
+                itemHolder.textTime.setText(s + "D");
+            } else {
+                int weeks = days/7;
+                String s = Integer.toString(weeks);
+                itemHolder.textTime.setText(s + "W");
+            }
+        } else {
+            itemHolder.textTime.setText("");
+        }
+
+        //SETS THE DURATION OF THE TRIP
+        int hours = Hours.hoursBetween(trip.getStartDate(),trip.getEndDate()).getHours();
+        int days = hours/24;
+        int weeks = days/7;
+        String h = Integer.toString(hours);
+        String d = Integer.toString(days);
+        String w = Integer.toString(weeks);
+        if (hours < 24) {
+            itemHolder.textDuration.setText(h + "H");
+        } else if (days < 6) {
+            itemHolder.textDuration.setText(d + "D" );
+        } else {
+            itemHolder.textDuration.setText(w + "W " + d + "D");
+        }
+
+        //SETS THE MONEY SPENT TEXT OR MAKES IT AND DIVIDER INVISIBLE
+        if (trip.getMoneySpent() == 0) {
+            itemHolder.moneyImage.setVisibility(View.GONE);
+            itemHolder.textMoney.setVisibility(View.GONE);
+        } else {
+            String s = Integer.toString(trip.getMoneySpent());
+            String currency = pref.getString("pref_app_currency","Default");
+            if (currency.equals("USD")) {
+                itemHolder.textMoney.setText("$" + s);
+            } else if (currency.equals("CAD")) {
+                itemHolder.textMoney.setText("$" + s + " CAD");
+            } else if (currency.equals("GBP")) {
+                itemHolder.textMoney.setText("£" + s);
+            } else if (currency.equals("EUR")) {
+                itemHolder.textMoney.setText("€" + s);
+            }
         }
 
         itemHolder.rootView.setOnClickListener(new View.OnClickListener() {
@@ -72,27 +145,41 @@ public class TripSection extends StatelessSection {
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder) {
         HeaderViewHolder headerHolder = (HeaderViewHolder) holder;
         headerHolder.headerTitle.setText(title);
+
+        if (list.size() > 1) {
+            String size = Integer.toString(list.size());
+            headerHolder.headerCount.setText(size + " Trips");
+        } else {
+            headerHolder.headerCount.setVisibility(View.GONE);
+        }
     }
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder {
-        private final TextView headerTitle;
+        private final TextView headerTitle, headerCount;
         HeaderViewHolder(View view) {
             super(view);
             headerTitle = itemView.findViewById(R.id.header_title);
+            headerCount = itemView.findViewById(R.id.header_count);
         }
     }
 
     private class TripViewHolder extends RecyclerView.ViewHolder {
-        private final View rootView;
-        private final TextView textName, textDesc;
+        private final View rootView, divider;
+        private final TextView textName, textDesc, textTime, textMoney, textDuration;
+        private final ImageView moneyImage;
 
         public TripViewHolder(View view) {
             super(view);
 
             rootView = view;
+            divider = itemView.findViewById(R.id.recycler_divider);
 
-            textName = itemView.findViewById(R.id.text_list_view_item_name);
-            textDesc = itemView.findViewById(R.id.text_list_view_item_desc);
+            textName = itemView.findViewById(R.id.text_recycler_item_name);
+            textDesc = itemView.findViewById(R.id.text_recycler_item_desc);
+            textTime = itemView.findViewById(R.id.text_recycler_item_time);
+            textMoney = itemView.findViewById(R.id.text_recycler_money_spent);
+            textDuration = itemView.findViewById(R.id.text_recycler_duration);
+            moneyImage = itemView.findViewById(R.id.recycler_money);
         }
     }
 }

@@ -1,12 +1,15 @@
 package io.github.dansager.travelplanner.data_structures;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTime;
+
 public class Trip {
     private String name = "";
-    private DateInfo startDate;
-    private DateInfo endDate;
+    private DateTime startDate;
+    private DateTime endDate;
     private int MoneySpent = 0;
 
-    public Trip(String name,DateInfo startDate,DateInfo endDate) {
+    public Trip(String name,DateTime startDate,DateTime endDate) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -20,10 +23,10 @@ public class Trip {
         return MoneySpent = i;
     }
 
-    public DateInfo setStartDate (DateInfo d) {
+    public DateTime setStartDate (DateTime d) {
         return startDate = d;
     }
-    public DateInfo setEndDate (DateInfo d) {
+    public DateTime setEndDate (DateTime d) {
         return endDate = d;
     }
 
@@ -35,10 +38,10 @@ public class Trip {
         return name;
     }
 
-    public DateInfo getStartDate () {
+    public DateTime getStartDate () {
         return startDate;
     }
-    public DateInfo getEndDate () {
+    public DateTime getEndDate () {
         return endDate;
     }
 }

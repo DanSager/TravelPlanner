@@ -12,26 +12,6 @@
     <string name="pref_user_name_default">John Smith</string>
 
     <string name="pref_app_title">App Settings</string>
-    <string name="pref_app_color_title">Color</string>
-    <string name="pref_app_color_default">Teal</string>
-    <string-array name="pref_app_color_entries">
-        <item>Teal</item>
-        <item>Red</item>
-        <item>Orange</item>
-        <item>Yellow</item>
-        <item>Green</item>
-        <item>Blue</item>
-        <item>Purple</item>
-    </string-array>
-    <string-array name="pref_app_color_entry_values">
-        <item>Teal</item>
-        <item>Red</item>
-        <item>Orange</item>
-        <item>Yellow</item>
-        <item>Green</item>
-        <item>Blue</item>
-        <item>Purple</item>
-    </string-array>
     <string name="pref_app_currency_title">Currency</string>
     <string name="pref_app_currency_default">USD</string>
     <string-array name="pref_app_currency_entries">
@@ -55,9 +35,15 @@
     <string name="create_window_start_date_hint">Start Date</string>
     <string name="create_window_end_date_hint">End Date</string>
 
-    <!-- Strings Related to ListView -->
+    <!-- Strings Related to RecyclerView -->
 
-    <string name="list_view_name">Example Name Text</string>
-    <string name="list_view_description">Example Discription</string>
+    <string name="recycler_title">Example Title</string>
+    <string name="recycler_count">Example Count</string>
+
+    <string name="recycler_name">Example Name Text</string>
+    <string name="recycler_description">Example Description</string>
+    <string name="recycler_time">Example Time</string>
+    <string name="recycler_duration">Example Duration</string>
+    <string name="recycler_money">Example $ Spent</string>
 
 </resources>

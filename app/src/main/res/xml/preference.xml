@@ -23,15 +23,6 @@
         android:title="@string/pref_app_title">
 
         <ListPreference
-            android:key="pref_app_color"
-            android:title="@string/pref_app_color_title"
-            android:defaultValue="@string/pref_app_color_default"
-            android:entries="@array/pref_app_color_entries"
-            android:entryValues="@array/pref_app_color_entry_values">
-
-        </ListPreference>
-
-        <ListPreference
             android:key="pref_app_currency"
             android:title="@string/pref_app_currency_title"
             android:defaultValue="@string/pref_app_currency_default"
@@ -52,6 +43,8 @@
         </SwitchPreference>
 
     </PreferenceCategory>
+
+
 
 
 </PreferenceScreen>

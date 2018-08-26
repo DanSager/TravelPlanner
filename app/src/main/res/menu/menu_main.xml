@@ -5,14 +5,14 @@
 
     <item
         android:id="@+id/action_stats"
-        android:orderInCategory="100"
         android:title="@string/action_stats"
-        app:showAsAction="never" />
+        android:icon="@drawable/sharp_timeline_white_18dp"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:icon="@drawable/round_settings_white_18dp"
+        app:showAsAction="always" />
 
 </menu>

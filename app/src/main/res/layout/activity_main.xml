@@ -9,8 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/ThemeOverhaul">
 
     </android.support.design.widget.AppBarLayout>
 
@@ -22,9 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:tint="@android:color/white"
-        app:backgroundTint="?attr/colorAccent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:backgroundTint="?attr/colorPrimary"
+        app:srcCompat="@drawable/round_create_white_48dp" />
 
 
 

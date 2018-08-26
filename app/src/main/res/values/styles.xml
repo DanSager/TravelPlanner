@@ -1,49 +1,11 @@
 <resources>
-
-    <style name="AppTheme" parent="Theme.AppCompat">
-
-        <item name="colorAccent">@color/accent_material_teal</item>
-        <item name="colorPrimary">@color/primary_material_teal</item>
-    </style>
-
-    <style name="TealStyle" parent="Theme.AppCompat">
-        <item name="colorAccent">@color/accent_material_teal</item>
-        <item name="colorPrimary">@color/primary_material_teal</item>
-    </style>
-
-    <style name="RedStyle" parent="AppTheme">
-        <item name="colorPrimary">@color/primary_material_red</item>
-        <item name="colorAccent">@color/accent_material_red</item>
-    </style>
-
-    <style name="OrangeStyle" parent="AppTheme">
-        <item name="colorPrimary">@color/primary_material_orange</item>
-        <item name="colorAccent">@color/accent_material_orange</item>
-    </style>
-
-    <style name="YellowStyle" parent="AppTheme">
-        <item name="colorPrimary">@color/primary_material_yellow</item>
-        <item name="colorAccent">@color/accent_material_yellow</item>
-    </style>
-
-    <style name="GreenStyle" parent="AppTheme">
-        <item name="colorPrimary">@color/primary_material_green</item>
-        <item name="colorAccent">@color/accent_material_green</item>
-    </style>
-
-    <style name="BlueStyle" parent="AppTheme">
-        <item name="colorPrimary">@color/primary_material_blue</item>
-        <item name="colorAccent">@color/accent_material_blue</item>
-    </style>
-
-    <style name="PurpleStyle" parent="AppTheme">
-        <item name="colorPrimary">@color/primary_material_purple</item>
-        <item name="colorAccent">@color/accent_material_purple</item>
-    </style>
-
-    <style name="popup" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/popupone</item>
-        <item name="colorPrimaryDark">@color/popuptwo</item>
-        <item name="colorAccent">@color/popupsix</item>
+    <style name="ThemeOverhaul" parent="Theme.AppCompat">
+        <item name="android:fontFamily">@font/alegreya_sans</item>
+        <item name="colorPrimary">@color/background_dark</item>
+        <item name="colorPrimaryDark">@color/background_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/background_medium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorBackground">@color/background_medium</item>
     </style>
 </resources>

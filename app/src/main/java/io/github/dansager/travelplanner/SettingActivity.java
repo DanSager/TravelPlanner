@@ -21,7 +21,6 @@ public class SettingActivity extends PreferenceActivity implements SharedPrefere
         addPreferencesFromResource(R.xml.preference);
         PreferenceManager.setDefaultValues(this, R.xml.preference, false);
         initSummary(getPreferenceScreen());
-        themeSelector();
     }
 
     @Override
@@ -29,11 +28,10 @@ public class SettingActivity extends PreferenceActivity implements SharedPrefere
         updatePrefSummary(findPreference(key));
 
         if (key.equals("pref_app_color")) {
-            themeSelector();
             Intent intent = new Intent(this, SettingActivity.class);
             finish();
-            this.overridePendingTransition(0, 0);
             startActivity(intent);
+            this.overridePendingTransition(0, 0);
         }
     }
 
@@ -41,6 +39,7 @@ public class SettingActivity extends PreferenceActivity implements SharedPrefere
         Intent intent = new Intent(this, MainActivity.class);
         finish();
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 
     private void initSummary(Preference p) {
@@ -85,26 +84,4 @@ public class SettingActivity extends PreferenceActivity implements SharedPrefere
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
-
-    private void themeSelector() {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = pref.getString("pref_app_color","Default");
-        if (color.equals("Teal")) {
-            setTheme(R.style.AppTheme);
-        } else if (color.equals("Red")) {
-            setTheme(R.style.RedStyle);
-        } else if (color.equals("Orange")) {
-            setTheme(R.style.OrangeStyle);
-        } else if (color.equals("Yellow")) {
-            setTheme(R.style.YellowStyle);
-        } else if (color.equals("Green")) {
-            setTheme(R.style.GreenStyle);
-        } else if (color.equals("Blue")) {
-            setTheme(R.style.BlueStyle);
-        } else if (color.equals("Purple")) {
-            setTheme(R.style.PurpleStyle);
-        }
-
-    }
-
 }

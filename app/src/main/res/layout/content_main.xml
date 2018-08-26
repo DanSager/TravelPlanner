@@ -9,13 +9,12 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <com.jaychang.srv.SimpleRecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-    </com.jaychang.srv.SimpleRecyclerView>
+        <com.jaychang.srv.SimpleRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+        </com.jaychang.srv.SimpleRecyclerView>
 
 </LinearLayout>

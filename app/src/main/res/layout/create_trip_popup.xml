@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="325dp"
+    android:layout_width="300dp"
     android:layout_height="475dp"
     android:padding="5dp"
     android:layout_gravity="center"
-    android:background="@color/popuptwo"
+
     >
     
     <TextView
@@ -16,7 +16,6 @@
         android:layout_gravity="center"
         android:paddingTop="10dp"
         android:textStyle="bold"
-        android:textColor="@color/white"
         android:textSize="30sp"/>
 
     <EditText
@@ -31,7 +30,6 @@
         android:inputType="text"
         android:textSize="20sp"
         android:gravity="center"
-        android:textColor="@color/white"
         android:maxLength="20"
         />
 
@@ -46,7 +44,6 @@
         android:hint="@string/create_window_start_date_hint"
         android:textSize="20sp"
         android:gravity="center"
-        android:textColor="@color/white"
         />
 
     <TextView
@@ -60,7 +57,6 @@
         android:hint="@string/create_window_end_date_hint"
         android:textSize="20sp"
         android:gravity="center"
-        android:textColor="@color/white"
         />
 
     <RelativeLayout
@@ -75,8 +71,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginStart="40dp"
             android:background="@drawable/text_bubble"
-            android:text="Cancel"
-            android:textColor="@color/white" />
+            android:text="Cancel" />
 
         <Button
             android:id="@+id/create_create_button"
@@ -86,8 +81,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="40dp"
             android:background="@drawable/text_bubble"
-            android:text="Create"
-            android:textColor="@color/white" />
+            android:text="Create" />
     </RelativeLayout>
 
 
