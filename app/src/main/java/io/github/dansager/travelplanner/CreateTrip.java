@@ -1,5 +1,6 @@
 package io.github.dansager.travelplanner;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -62,6 +63,7 @@ public class CreateTrip {
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         final Boolean dateFormat = pref.getBoolean("pref_app_date_format",false);   //Default/false = mm/dd/yyyy
+        final Boolean dateSelectFormat = pref.getBoolean("pref_date_select_format",false); //Default/false = calendar
 
         startDateText = (TextView) create_window.findViewById(R.id.create_start_date);
         startDateText.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +73,15 @@ public class CreateTrip {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog;
 
-                DatePickerDialog dialog = new DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog_MinWidth, startDateTextListener, year,month,day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                if(!dateSelectFormat) {
+                    dialog = new DatePickerDialog(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK, startDateTextListener, year,month,day);
+                } else {
+                    dialog = new DatePickerDialog(context, AlertDialog.THEME_HOLO_DARK, startDateTextListener, year,month,day);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+
                 dialog.getWindow();
                 dialog.show();
             }
@@ -101,9 +109,15 @@ public class CreateTrip {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog;
 
-                DatePickerDialog dialog = new DatePickerDialog(context,android.R.style.Theme_Holo_Light_Dialog_MinWidth, endDateTextListener, year,month,day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                if(!dateSelectFormat) {
+                    dialog = new DatePickerDialog(context, AlertDialog.THEME_DEVICE_DEFAULT_DARK, endDateTextListener, year,month,day);
+                } else {
+                    dialog = new DatePickerDialog(context, AlertDialog.THEME_HOLO_DARK, endDateTextListener, year,month,day);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+
                 dialog.getWindow();
                 dialog.show();
             }
