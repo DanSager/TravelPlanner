@@ -1,6 +1,7 @@
 package io.github.dansager.travelplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -25,6 +27,7 @@ public class TripSection extends StatelessSection {
     public static Context mCtx;
     List<Trip> list;
     String title;
+    MainActivity mA = new MainActivity();
 
     public TripSection(Context mCtx, String title, List<Trip> list) {
         super(SectionParameters.builder().itemResourceId(R.layout.recycler_items).headerResourceId(R.layout.recycler_header).build());
@@ -138,6 +141,10 @@ public class TripSection extends StatelessSection {
             @Override
             public void onClick(View view) {
                 Log.i("myTag",trip.getName());
+
+                Intent intent = new Intent(mCtx,TripDisplay.class);
+                intent.putExtra("value",trip.getName());
+                mCtx.startActivity(intent);
             }
         });
     }

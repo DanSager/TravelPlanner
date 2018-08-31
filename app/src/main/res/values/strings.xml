@@ -29,12 +29,25 @@
     <string name="pref_app_date_format">Date Format</string>
     <string name="pref_date_select_format">Date Select Format</string>
 
-    <!-- Strings Related to Create Popup Window -->
+    <!-- Strings Related to Create Trip Popup Window -->
 
     <string name="create_window_heading">Create A New Trip</string>
     <string name="create_window_name_hint">Trip Name</string>
     <string name="create_window_start_date_hint">Start Date</string>
     <string name="create_window_end_date_hint">End Date</string>
+
+    <!-- Strings Related to Create Expense Popup Window -->
+
+    <string name="create_expense_window_heading">Create A New Activity</string>
+    <string name="create_expense_window_name_hint">Activity Name</string>
+    <string name="create_expense_window_type_hint">Activity Type</string>
+    <string name="create_expense_window_type_specifics_hint">Type Options (Optional)</string>
+    <string name="create_expense_window_start_date_hint">Start Date</string>
+    <string name="create_expense_window_start_time_hint">Start Time</string>
+    <string name="create_expense_window_end_date_hint">End Date</string>
+    <string name="create_expense_window_end_time_hint">End Time</string>
+    <string name="create_expense_window_currency_hint">Currency</string>
+    <string name="create_expense_window_cost_hint">Cost</string>
 
     <!-- Strings Related to RecyclerView -->
 
@@ -46,5 +59,40 @@
     <string name="recycler_time">Example Time</string>
     <string name="recycler_duration">Example Duration</string>
     <string name="recycler_money">Example $ Spent</string>
+
+    <!-- Strings Related to DisplayTrip -->
+
+    <string name="display_name">Example Display Name</string>
+    <string name="display_start_date">Jan 01, 2018</string>
+    <string name="display_end_date">Dec 31, 2018</string>
+    <string name="display_cost">$1250.25</string>
+
+    <!-- Strings Related to CreateExpenseMenu -->
+
+    <string-array name="expense_items">
+        <item name="expense_menu_plane">Transportation</item>
+        <item name="expense_menu_train">Accommodation</item>
+        <item name="expense_menu_coach">Excursion</item>
+        <item name="expense_menu_car">Food</item>
+        <item name="expense_menu_boat">Other</item>
+    </string-array>
+
+    <string-array name="expense_transportation_items">
+        <item name="expense_menu_plane">Plane</item>
+        <item name="expense_menu_train">Train</item>
+        <item name="expense_menu_coach">Coach</item>
+        <item name="expense_menu_car">Car</item>
+        <item name="expense_menu_boat">Boat</item>
+        <item name="expense_menu_taxiUber">Taxi/Uber</item>
+        <item name="expense_menu_other">Other</item>
+    </string-array>
+
+    <string-array name="expense_accommodation_items">
+        <item name="expense_menu_hotel">Hotel</item>
+        <item name="expense_menu_airbnb">Airbnb</item>
+        <item name="expense_menu_hostel">Hostel</item>
+        <item name="expense_menu_friend">Friend</item>
+        <item name="expense_menu_other">Other</item>
+    </string-array>
 
 </resources>

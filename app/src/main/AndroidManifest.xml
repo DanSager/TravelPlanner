@@ -27,9 +27,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.dansager.travelplanner.MainActivity" />
         </activity>
+        <activity android:name=".TripDisplay" />
 
         <meta-data
-            android:name="preloaded_fonts"
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="io.github.dansager.travelplanner.MainActivity"
             android:resource="@array/preloaded_fonts" />
     </application>
 

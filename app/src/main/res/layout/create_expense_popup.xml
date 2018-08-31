@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:layout_gravity="center"
+    >
+
+    <TextView
+        android:id="@+id/expense_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_expense_window_heading"
+        android:layout_gravity="center"
+        android:paddingTop="5dp"
+        android:textStyle="bold"
+        android:textSize="30sp"/>
+
+    <EditText
+        android:id="@+id/create_expense_name"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_expense_window_name_hint"
+        android:inputType="text"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:maxLength="20"
+        />
+
+    <TextView
+        android:id="@+id/create_expense_type"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_expense_window_type_hint"
+        android:inputType="text"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:maxLength="20"
+        />
+
+    <TextView
+        android:id="@+id/create_expense_type_specifics"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_block"
+        android:gravity="center"
+        android:hint="@string/create_expense_window_type_specifics_hint"
+        android:inputType="text"
+        android:maxLength="20"
+        android:textColorHint="#808080"
+        android:textSize="20sp"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/create_expense_start_date"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_expense_window_start_date_hint"
+        android:textSize="20sp"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/create_expense_start_time"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_expense_window_start_time_hint"
+        android:textSize="20sp"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/create_expense_end_date"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_expense_window_end_date_hint"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/create_expense_end_time"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_expense_window_end_time_hint"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/create_expense_currency"
+        android:background="@drawable/text_block"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#808080"
+        android:hint="@string/create_expense_window_currency_hint"
+        android:textSize="20sp"
+        android:gravity="center"
+        />
+
+    <EditText
+        android:id="@+id/create_expense_cost"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_block"
+        android:gravity="center"
+        android:hint="@string/create_expense_window_cost_hint"
+        android:inputType="number"
+        android:textColorHint="#808080"
+        android:textSize="20sp" />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/create_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/text_bubble"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/create_create_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/text_bubble"
+            android:text="Create" />
+    </RelativeLayout>
+
+
+</LinearLayout>

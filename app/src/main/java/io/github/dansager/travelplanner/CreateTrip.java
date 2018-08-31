@@ -179,14 +179,11 @@ public class CreateTrip {
 
                     Trip newTrip = new Trip(name,tripStartDate,tripEndDate);
 
-
-
                     if (tripList == null) {
                         tripList = new ArrayList<Trip>();
                     }
 
                     tripList.add(newTrip);
-
 
                     Collections.sort(tripList, new Comparator<Trip>() {
                         @Override
@@ -197,8 +194,6 @@ public class CreateTrip {
                             
                         }
                     });
-
-
 
                     json = gson.toJson(tripList);
 
