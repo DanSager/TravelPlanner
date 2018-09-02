@@ -20,10 +20,13 @@ import org.joda.time.DateTime;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.github.dansager.travelplanner.data_structures.DateTimeConverter;
 import io.github.dansager.travelplanner.data_structures.ExchangeRate;
+import io.github.dansager.travelplanner.data_structures.Expense;
 import io.github.dansager.travelplanner.data_structures.Trip;
 
 public class TripDisplay extends AppCompatActivity {
@@ -151,7 +154,7 @@ public class TripDisplay extends AppCompatActivity {
         }
 
         TextView budgetText = findViewById(R.id.display_budget);
-        if (activeTrip.getBudget() == 0.0 || activeTrip.getBudget() == 0) {
+        if (round(activeTrip.getBudget(),2) == 0.0 || activeTrip.getBudget() == 0) {
             budgetText.setVisibility(View.GONE);
         } else {
             switch (currency) {

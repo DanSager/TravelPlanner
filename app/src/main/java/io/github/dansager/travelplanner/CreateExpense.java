@@ -59,7 +59,7 @@ public class CreateExpense {
     private TextView endTimeText;
     private boolean setEndDate = false;
     DateTime startDate = new DateTime();
-    DateTime endDate = new DateTime();
+    DateTime endDate;
     private String currency;
     private double cost;
     private static String type = "";
@@ -134,6 +134,7 @@ public class CreateExpense {
                                 createExpenseType.setText("Excursion");
                                 createExpenseTypeSpecifics.setVisibility(View.GONE);
                                 createExpenseTypeSpecifics.setText(null);
+                                expenseTypeSpecific = "";
                                 setEndDate = true;
                                 createExpenseEndDate.setVisibility(View.VISIBLE);
                                 createExpenseEndDate.setText(null);
@@ -145,6 +146,7 @@ public class CreateExpense {
                                 createExpenseType.setText("Food");
                                 createExpenseTypeSpecifics.setVisibility(View.GONE);
                                 createExpenseTypeSpecifics.setText(null);
+                                expenseTypeSpecific = "";
                                 setEndDate = false;
                                 createExpenseEndDate.setVisibility(View.GONE);
                                 createExpenseEndDate.setText(null);
@@ -156,6 +158,7 @@ public class CreateExpense {
                                 createExpenseType.setText("Other");
                                 createExpenseTypeSpecifics.setVisibility(View.GONE);
                                 createExpenseTypeSpecifics.setText(null);
+                                expenseTypeSpecific = "";
                                 setEndDate = false;
                                 createExpenseEndDate.setVisibility(View.GONE);
                                 createExpenseEndDate.setText(null);
@@ -436,19 +439,17 @@ public class CreateExpense {
                 EditText expenseCost = (EditText) create_window.findViewById(R.id.create_expense_cost);
                 String name = expenseName.getText().toString();
                 String inT = expenseCost.getText().toString();
-                cost = Double.parseDouble(inT);
+                if (inT.equals("")) {
+                    cost = 0.0;
+                } else {
+                    cost = Double.parseDouble(inT);
+                }
 
                 if (name.equals("")) {
                     Toast.makeText(mCtx, "Invalid Name", Toast.LENGTH_SHORT).show();
                 } else if (startDate == null) {
                     Toast.makeText(mCtx, "Missing Start Date", Toast.LENGTH_SHORT).show();
-                } else if (endDate.isBefore(startDate)){
-                    Toast.makeText(mCtx, "End Date Can't Be Before Start Date", Toast.LENGTH_SHORT).show();
-                } else if (startDate.isBefore(trip.getStartDate())) {
-                    Toast.makeText(mCtx, "Start Date Can't Be Before Trip Start Date", Toast.LENGTH_SHORT).show();
-                } else if (setEndDate == true && endDate.isAfter(trip.getEndDate())) {
-                    Toast.makeText(mCtx, "End Date Can't Be After Trip End Date", Toast.LENGTH_SHORT).show();
-                } else {
+                }   else {
 
                     SharedPreferences settings = mCtx.getSharedPreferences("Trip_Pref", 0);
                     SharedPreferences.Editor prefEditor = settings.edit();
@@ -467,14 +468,14 @@ public class CreateExpense {
 
                     Expense e = new Expense(name,type,currency,cost,startDate);
 
-                    if (setEndDate == true) {
+                    if (endDate != null) {
                         e.setEndDate(endDate);
                     }
                     if (expenseTypeSpecific != null || !expenseTypeSpecific.equals("")) {
                         e.setTypeSpecific(expenseTypeSpecific);
                     }
 
-                    if (trip.getBudget() != 0.0 || trip.getBudget() != 0) {
+                    if (round(trip.getBudget(),2) != 0.0 || trip.getBudget() != 0) {
                         trip.setBudget(trip.getBudget() - round(cost,2));
                     }
 
@@ -506,7 +507,7 @@ public class CreateExpense {
                                 d1 = new DateTime(e1.getEndDate());
                                 d2 = new DateTime(e2.getStartDate());
                             } else {
-                                d1 = new DateTime(e1.getStartDate());
+                                d1 = new DateTime(e1.getEndDate());
                                 d2 = new DateTime(e2.getEndDate());
                             }
                             return d1.compareTo(d2);

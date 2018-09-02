@@ -231,8 +231,8 @@ public class CreateTrip {
 
                     EditText budgetText = create_window.findViewById(R.id.create_trip_cost);
                     String inT = budgetText.getText().toString();
-                    cost = Double.parseDouble(inT);
-                    if (cost != 0.0 || cost != 0) {
+                    if (!inT.equals("")) {
+                        cost = Double.parseDouble(inT);
                         switch (currency) {
                             case "USD": newTrip.setBudget(cost); break;
                             case "CAD": newTrip.setBudget(cost * ER.getCADtoUSD()); break;
