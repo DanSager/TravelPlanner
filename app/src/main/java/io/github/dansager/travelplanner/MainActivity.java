@@ -63,13 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {  // After a pause OR at startup
-        super.onResume();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -77,31 +71,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent intent;
 
-        if (id == R.id.action_stats) {
-//            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
-//            tripList.clear();
-//            upcomingTrips.clear();
-//            currentTrips.clear();
-//            previousTrips.clear();
-//            sectionAdapter.notifyDataSetChanged();
-//
-//            SharedPreferences settings = getSharedPreferences("Trip_Pref", 0);
-//            SharedPreferences.Editor prefEditor = settings.edit();
-//            Gson gson = new Gson();
-//            String json = settings.getString("Trips", "");
-//            json = gson.toJson(tripList);
-//            prefEditor.putString("Trips", json);
-//            prefEditor.commit();
-//            //CLEARS THE LIST AND SAVES IT SHAREDPREFENCE
-
-            Toast.makeText(this, "WIP",Toast.LENGTH_LONG).show();
-        } else if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-            finish();
-            return true;
+        switch (id) {
+            case R.id.action_stats:
+                intent = new Intent(MainActivity.this, OverallStats.class);
+                startActivity(intent);
+                break;
+            case R.id.action_settings:
+                intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -135,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         sectionAdapter = new SectionedRecyclerViewAdapter();
-
         sectionAdapter.addSection(new TripSection(this,"Upcoming",upcomingTrips));
         sectionAdapter.addSection(new TripSection(this,"Current",currentTrips));
         sectionAdapter.addSection(new TripSection(this,"Previous",previousTrips));

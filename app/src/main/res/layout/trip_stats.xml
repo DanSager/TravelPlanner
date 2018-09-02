@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/background_medium"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/stats_trip_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Example Name"
+            android:textSize="40sp"
+            android:paddingTop="5dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/stats_trip_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trip Totals:"
+            android:textSize="25sp"
+            android:paddingTop="10dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_total_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_total_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Days: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_total_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average Cost Per Day: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_trans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transportation Totals:"
+            android:textSize="25sp"
+            android:paddingTop="5dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_trans_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_trans_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Count: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_trans_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_accom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accommodation Totals:"
+            android:textSize="25sp"
+            android:paddingTop="5dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_accom_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_accom_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number of Nights: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_accom_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average Cost per Night: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_excurs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Excursion Totals:"
+            android:textSize="25sp"
+            android:paddingTop="5dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_excurs_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_excurs_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Count: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_excurs_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_food"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food Totals:"
+            android:textSize="25sp"
+            android:paddingTop="5dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_food_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_food_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Count: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_food_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Other Totals:"
+            android:textSize="25sp"
+            android:paddingTop="5dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_other_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_other_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Count: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/stats_trip_other_average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average Cost: XX"
+            android:textSize="15sp"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+
+</ScrollView>
+

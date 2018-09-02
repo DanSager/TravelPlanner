@@ -160,22 +160,30 @@ public class CreateTrip {
                 EditText tripName = (EditText) create_window.findViewById(R.id.create_trip_name);
                 String name = tripName.getText().toString();
 
-                if (name.equals("")) {
+                SharedPreferences settings = context.getSharedPreferences("Trip_Pref", 0);
+                SharedPreferences.Editor prefEditor = settings.edit();
+                final GsonBuilder builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeConverter());
+                final Gson gson = builder.create();
+                String json = settings.getString("Trips", "");
+                Type type = new TypeToken<ArrayList<Trip>>(){}.getType();
+                List<Trip> tripList = gson.fromJson(json, type);
+
+                boolean sameName = false;
+                for (Trip t : tripList) {
+                    if (name.equals(t.getName())) {
+                        sameName = true;
+                    }
+                }
+
+                if (sameName) {
+                    Toast.makeText(context, "Can't Name Multiple Trips the Same Thing", Toast.LENGTH_SHORT).show();
+                } else if (name.equals("")) {
                     Toast.makeText(context, "Invalid Name", Toast.LENGTH_SHORT).show();
                 } else if ((tripStartDate == null) || (tripEndDate == null)) {
                     Toast.makeText(context, "Missing Date", Toast.LENGTH_SHORT).show();
                 } else if (tripStartDate.isAfter(tripEndDate)){
                     Toast.makeText(context, "End Date Can't Be Before Start Date", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    SharedPreferences settings = context.getSharedPreferences("Trip_Pref", 0);
-                    SharedPreferences.Editor prefEditor = settings.edit();
-                    final GsonBuilder builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeConverter());
-                    final Gson gson = builder.create();
-                    String json = settings.getString("Trips", "");
-                    Type type = new TypeToken<ArrayList<Trip>>(){}.getType();
-                    List<Trip> tripList = gson.fromJson(json, type);
-
 
                     Trip newTrip = new Trip(name,tripStartDate,tripEndDate);
 

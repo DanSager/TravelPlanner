@@ -7,11 +7,11 @@ public class Expense {
     private String type = "";
     private String typeSpecific = "";
     private String currency = "";
-    private int cost = 0;
+    private double cost = 0;
     private DateTime startDate;
     private DateTime endDate;
 
-    public Expense(String name,String type,String currency,int cost,DateTime startDate) {
+    public Expense(String name,String type,String currency,double cost,DateTime startDate) {
         this.name = name;
         this.type = type;
         this.currency = currency;
@@ -41,7 +41,7 @@ public class Expense {
         return currency = s;
     }
 
-    public int setCost (int c) {
+    public double setCost (double c) {
         return cost = c;
     }
 
@@ -61,7 +61,8 @@ public class Expense {
 
     public String getCurrency () { return currency; }
 
-    public int getCost () {
+    public double getCost () {
         return cost;
     }
+
 }

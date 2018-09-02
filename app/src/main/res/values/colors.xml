@@ -4,10 +4,11 @@
     <color name="colorPrimary">#04B97F</color>
     <color name="colorAccent">#37EFBA</color>
 
+    <color name="hintText">#808080</color>
+
     <color name="background_light">#33333D</color>
     <color name="background_medium">#26282F</color>
     <color name="background_dark">#1d1e23</color>
-
 
     <color name="popupone">#3F51B5</color>
     <color name="popuptwo">#2f333f</color>

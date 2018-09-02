@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,25 +21,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.google.gson.internal.bind.DateTypeAdapter;
 import com.google.gson.reflect.TypeToken;
 
-import org.joda.time.Chronology;
 import org.joda.time.DateTime;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Type;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -48,40 +33,43 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.github.dansager.travelplanner.data_structures.DateTimeConverter;
+import io.github.dansager.travelplanner.data_structures.ExchangeRate;
 import io.github.dansager.travelplanner.data_structures.Expense;
 import io.github.dansager.travelplanner.data_structures.Trip;
 
 public class CreateExpense {
-
-    MainActivity mainActivity;
+    
+    private static Dialog create_window;
+    private static Context mCtx;
 
     Boolean dateFormat;
     Boolean dateSelectFormat;
-    Trip trip;
+    private static Trip trip;
 
     private DatePickerDialog.OnDateSetListener startDateTextListener;
     private DatePickerDialog.OnDateSetListener endDateTextListener;
     private TimePickerDialog.OnTimeSetListener startTimeTextListener;
     private TimePickerDialog.OnTimeSetListener endTimeTextListener;
-    private String expenseType;
-    private String expenseTypeSpecific;
+    private String expenseTypeSpecific = "";
     private TextView startDateText;
     private TextView startTimeText;
     private TextView endDateText;
     private TextView endTimeText;
     private boolean setEndDate = false;
-    private boolean setTypeSpecific = false;
     DateTime startDate = new DateTime();
     DateTime endDate = new DateTime();
     private String currency;
-    private int cost;
-    String type = "";
+    private double cost;
+    private static String type = "";
+
+    ExchangeRate ER = new ExchangeRate();
 
     public void createDialogWindow (final Context context,Trip activeTrip) {
-        Dialog create_window = new Dialog(context);
+        create_window = new Dialog(context);
+        mCtx = context;
         trip = activeTrip;
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mCtx);
         dateFormat = pref.getBoolean("pref_app_date_format",false);   //Default/false = mm/dd/yyyy
         dateSelectFormat = pref.getBoolean("pref_date_select_format",false); //Default/false = calendar
 
@@ -89,21 +77,21 @@ public class CreateExpense {
         create_window.getWindow();
         create_window.show();
 
-        expenseTypeListener(context,create_window);
-        expenseTypeSpecificListener(context,create_window);
+        expenseTypeListener();
+        expenseTypeSpecificListener();
 
-        expenseStartDateListener(context,create_window);
-        expenseStartTimeListener(context,create_window);
-        expenseEndDateListener(context,create_window);
-        expenseEndTimeListener(context,create_window);
+        expenseStartDateListener();
+        expenseStartTimeListener();
+        expenseEndDateListener();
+        expenseEndTimeListener();
 
-        expenseCurrencyListener(context,create_window);
+        expenseCurrencyListener();
 
-        cancelButtonListener(context,create_window);
-        createButtonListener(context,create_window);
+        cancelButtonListener();
+        createButtonListener();
     }
 
-    private void expenseTypeListener (final Context context, final Dialog create_window) {
+    private void expenseTypeListener () {
         TextView createExpenseType = (TextView) create_window.findViewById(R.id.create_expense_type);
         TextView createExpenseTypeSpecifics = (TextView) create_window.findViewById(R.id.create_expense_type_specifics);
         TextView createExpenseEndDate = (TextView) create_window.findViewById(R.id.create_expense_end_date);
@@ -117,14 +105,12 @@ public class CreateExpense {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String toString = Integer.toString(i);
-                        expenseType = toString;
                         switch (i) {
                             case 0:
                                 createExpenseType.setText("Transportation");
                                 createExpenseTypeSpecifics.setVisibility(View.VISIBLE);
                                 createExpenseTypeSpecifics.setText(null);
                                 setEndDate = true;
-                                setTypeSpecific = true;
                                 createExpenseEndDate.setVisibility(View.VISIBLE);
                                 createExpenseEndDate.setText(null);
                                 createExpenseEndTime.setVisibility(View.VISIBLE);
@@ -136,7 +122,6 @@ public class CreateExpense {
                                 createExpenseTypeSpecifics.setVisibility(View.VISIBLE);
                                 createExpenseTypeSpecifics.setText(null);
                                 setEndDate = true;
-                                setTypeSpecific = true;
                                 createExpenseEndDate.setVisibility(View.VISIBLE);
                                 createExpenseEndDate.setText(null);
                                 createExpenseEndTime.setVisibility(View.VISIBLE);
@@ -148,7 +133,6 @@ public class CreateExpense {
                                 createExpenseTypeSpecifics.setVisibility(View.GONE);
                                 createExpenseTypeSpecifics.setText(null);
                                 setEndDate = true;
-                                setTypeSpecific = false;
                                 createExpenseEndDate.setVisibility(View.VISIBLE);
                                 createExpenseEndDate.setText(null);
                                 createExpenseEndTime.setVisibility(View.VISIBLE);
@@ -160,7 +144,6 @@ public class CreateExpense {
                                 createExpenseTypeSpecifics.setVisibility(View.GONE);
                                 createExpenseTypeSpecifics.setText(null);
                                 setEndDate = false;
-                                setTypeSpecific = false;
                                 createExpenseEndDate.setVisibility(View.GONE);
                                 createExpenseEndDate.setText(null);
                                 createExpenseEndTime.setVisibility(View.GONE);
@@ -172,7 +155,6 @@ public class CreateExpense {
                                 createExpenseTypeSpecifics.setVisibility(View.GONE);
                                 createExpenseTypeSpecifics.setText(null);
                                 setEndDate = false;
-                                setTypeSpecific = false;
                                 createExpenseEndDate.setVisibility(View.GONE);
                                 createExpenseEndDate.setText(null);
                                 createExpenseEndTime.setVisibility(View.GONE);
@@ -195,7 +177,7 @@ public class CreateExpense {
 
     }
 
-    private void expenseTypeSpecificListener (final Context context, final Dialog create_window) {
+    private void expenseTypeSpecificListener () {
         TextView createExpenseTypeSpecifics = (TextView) create_window.findViewById(R.id.create_expense_type_specifics);
         createExpenseTypeSpecifics.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,22 +187,20 @@ public class CreateExpense {
                 boolean skip = false;
 
                 if (type.equals("")) {
-                    Toast.makeText(context, "Must select a type before picking options", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mCtx, "Must select a type before picking options", Toast.LENGTH_SHORT).show();
                     skip = true;
                 } else if (type.equals("Transportation")) {
                     buildee.setItems(R.array.expense_transportation_items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            String toString = Integer.toString(i);
-                            expenseTypeSpecific = toString;
                             switch (i) {
-                                case 0: createExpenseTypeSpecifics.setText("Plane"); break;
-                                case 1: createExpenseTypeSpecifics.setText("Train"); break;
-                                case 2: createExpenseTypeSpecifics.setText("Coach"); break;
-                                case 3: createExpenseTypeSpecifics.setText("Car"); break;
-                                case 4: createExpenseTypeSpecifics.setText("Boat"); break;
-                                case 5: createExpenseTypeSpecifics.setText("Taxi/Uber"); break;
-                                case 6: createExpenseTypeSpecifics.setText("Other"); break;
+                                case 0: createExpenseTypeSpecifics.setText("Plane"); expenseTypeSpecific = "Plane"; break;
+                                case 1: createExpenseTypeSpecifics.setText("Train"); expenseTypeSpecific = "Train";break;
+                                case 2: createExpenseTypeSpecifics.setText("Coach"); expenseTypeSpecific = "Coach"; break;
+                                case 3: createExpenseTypeSpecifics.setText("Car"); expenseTypeSpecific = "Car"; break;
+                                case 4: createExpenseTypeSpecifics.setText("Boat"); expenseTypeSpecific = "Boat"; break;
+                                case 5: createExpenseTypeSpecifics.setText("Taxi/Uber"); expenseTypeSpecific = "Taxi/Uber"; break;
+                                case 6: createExpenseTypeSpecifics.setText("Other"); expenseTypeSpecific = "Other"; break;
                             }
                         }
                     });
@@ -228,13 +208,12 @@ public class CreateExpense {
                     buildee.setItems(R.array.expense_accommodation_items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            String toString = Integer.toString(i);
                             switch (i) {
-                                case 0: createExpenseTypeSpecifics.setText("Hotel"); break;
-                                case 1: createExpenseTypeSpecifics.setText("Airbnb"); break;
-                                case 2: createExpenseTypeSpecifics.setText("Hostel"); break;
-                                case 3: createExpenseTypeSpecifics.setText("Friend"); break;
-                                case 4: createExpenseTypeSpecifics.setText("Other"); break;
+                                case 0: createExpenseTypeSpecifics.setText("Hotel"); expenseTypeSpecific = "Hotel"; break;
+                                case 1: createExpenseTypeSpecifics.setText("Airbnb"); expenseTypeSpecific = "Airbnb"; break;
+                                case 2: createExpenseTypeSpecifics.setText("Hostel"); expenseTypeSpecific = "Hostel"; break;
+                                case 3: createExpenseTypeSpecifics.setText("Friend"); expenseTypeSpecific = "Friend"; break;
+                                case 4: createExpenseTypeSpecifics.setText("Other"); expenseTypeSpecific = "Other"; break;
                             }
                         }
                     });
@@ -254,7 +233,7 @@ public class CreateExpense {
         });
     }
 
-    private void expenseStartDateListener (final Context context, final Dialog create_window) {
+    private void expenseStartDateListener () {
         startDateText = (TextView) create_window.findViewById(R.id.create_expense_start_date);
         startTimeText = (TextView) create_window.findViewById(R.id.create_expense_start_time);
         startDateText.setOnClickListener(new View.OnClickListener() {
@@ -267,12 +246,14 @@ public class CreateExpense {
                 DatePickerDialog dialog;
 
                 if(!dateSelectFormat) {
-                    dialog = new DatePickerDialog(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK, startDateTextListener, year,month,day);
+                    dialog = new DatePickerDialog(mCtx,AlertDialog.THEME_DEVICE_DEFAULT_DARK, startDateTextListener, year,month,day);
                 } else {
-                    dialog = new DatePickerDialog(context, AlertDialog.THEME_HOLO_DARK, startDateTextListener, year,month,day);
+                    dialog = new DatePickerDialog(mCtx, AlertDialog.THEME_HOLO_DARK, startDateTextListener, year,month,day);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 }
 
+                dialog.getDatePicker().setMinDate(trip.getStartDate().getMillis());
+                dialog.getDatePicker().setMaxDate(trip.getEndDate().getMillis());
                 dialog.getWindow();
                 dialog.show();
             }
@@ -293,7 +274,7 @@ public class CreateExpense {
         };
     }
 
-    private void expenseStartTimeListener (final Context context, final Dialog create_window) {
+    private void expenseStartTimeListener () {
         startTimeText = (TextView) create_window.findViewById(R.id.create_expense_start_time);
         startTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,7 +283,7 @@ public class CreateExpense {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK, startTimeTextListener,hour,minute, true);
+                mTimePicker = new TimePickerDialog(mCtx,AlertDialog.THEME_DEVICE_DEFAULT_DARK, startTimeTextListener,hour,minute, true);
                 mTimePicker.getWindow();
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
@@ -323,25 +304,28 @@ public class CreateExpense {
         };
     }
 
-    private void expenseEndDateListener (final Context context, final Dialog create_window) {
+    private void expenseEndDateListener () {
         endDateText = (TextView) create_window.findViewById(R.id.create_expense_end_date);
         endTimeText = (TextView) create_window.findViewById(R.id.create_expense_end_time);
         endDateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
+
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog dialog;
 
                 if(!dateSelectFormat) {
-                    dialog = new DatePickerDialog(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK, endDateTextListener, year,month,day);
+                    dialog = new DatePickerDialog(mCtx,AlertDialog.THEME_DEVICE_DEFAULT_DARK, endDateTextListener, year,month,day);
                 } else {
-                    dialog = new DatePickerDialog(context, AlertDialog.THEME_HOLO_DARK, startDateTextListener, year,month,day);
+                    dialog = new DatePickerDialog(mCtx, AlertDialog.THEME_HOLO_DARK, startDateTextListener, year,month,day);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 }
 
+                dialog.getDatePicker().setMinDate(startDate.getMillis());
+                dialog.getDatePicker().setMaxDate(trip.getEndDate().getMillis());
                 dialog.getWindow();
                 dialog.show();
             }
@@ -362,7 +346,7 @@ public class CreateExpense {
         };
     }
 
-    private void expenseEndTimeListener (final Context context, final Dialog create_window) {
+    private void expenseEndTimeListener () {
         endTimeText = (TextView) create_window.findViewById(R.id.create_expense_end_time);
         endTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -371,11 +355,10 @@ public class CreateExpense {
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(context,AlertDialog.THEME_DEVICE_DEFAULT_DARK, endTimeTextListener,hour,minute, true);
+                mTimePicker = new TimePickerDialog(mCtx,AlertDialog.THEME_DEVICE_DEFAULT_DARK, endTimeTextListener,hour,minute, true);
                 mTimePicker.getWindow();
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
-
             }
         });
 
@@ -393,19 +376,19 @@ public class CreateExpense {
         };
     }
 
-    private void expenseCurrencyListener (final Context context, final Dialog create_window){
+    private void expenseCurrencyListener (){
         TextView currencyText = (TextView) create_window.findViewById(R.id.create_expense_currency);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mCtx);
         currency = pref.getString("pref_app_currency","Default");
         if (currency.equals("USD")) {
-            currencyText.setText("$");
+            currencyText.setText("USD");
         } else if (currency.equals("CAD")) {
-            currencyText.setText("$" + " CAD");
+            currencyText.setText("CAD");
         } else if (currency.equals("GBP")) {
-            currencyText.setText("£");
+            currencyText.setText("GBP");
         } else if (currency.equals("EUR")) {
-            currencyText.setText("€");
+            currencyText.setText("EUR");
         }
         currencyText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -424,11 +407,20 @@ public class CreateExpense {
                         }
                     }
                 } );
+                buildee.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                AlertDialog dialog = buildee.create();
+                dialog.show();
+
             }
         });
     }
 
-    private void cancelButtonListener (final Context context, final Dialog create_window) {
+    private void cancelButtonListener () {
         Button cancelButton = (Button) create_window.findViewById(R.id.create_cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -438,7 +430,7 @@ public class CreateExpense {
         });
     }
 
-    private void createButtonListener (final Context context, final Dialog create_window) {
+    private void createButtonListener () {
         Button createButton = (Button) create_window.findViewById(R.id.create_create_button);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -447,40 +439,48 @@ public class CreateExpense {
                 EditText expenseCost = (EditText) create_window.findViewById(R.id.create_expense_cost);
                 String name = expenseName.getText().toString();
                 String inT = expenseCost.getText().toString();
-                cost = Integer.parseInt(inT);
+                cost = Double.parseDouble(inT);
 
                 if (name.equals("")) {
-                    Toast.makeText(context, "Invalid Name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mCtx, "Invalid Name", Toast.LENGTH_SHORT).show();
                 } else if (startDate == null) {
-                    Toast.makeText(context, "Missing Start Date", Toast.LENGTH_SHORT).show();
-                } else if (startDate.isAfter(endDate)){
-                    Toast.makeText(context, "End Date Can't Be Before Start Date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mCtx, "Missing Start Date", Toast.LENGTH_SHORT).show();
+                } else if (endDate.isBefore(startDate)){
+                    Toast.makeText(mCtx, "End Date Can't Be Before Start Date", Toast.LENGTH_SHORT).show();
                 } else if (startDate.isBefore(trip.getStartDate())) {
-                    Toast.makeText(context, "Start Date Can't Be Before Trip Start Date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mCtx, "Start Date Can't Be Before Trip Start Date", Toast.LENGTH_SHORT).show();
                 } else if (setEndDate == true && endDate.isAfter(trip.getEndDate())) {
-                    Toast.makeText(context, "End Date Can't Be After Trip End Date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mCtx, "End Date Can't Be After Trip End Date", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    SharedPreferences settings = context.getSharedPreferences("Trip_Pref", 0);
+                    SharedPreferences settings = mCtx.getSharedPreferences("Trip_Pref", 0);
                     SharedPreferences.Editor prefEditor = settings.edit();
                     final GsonBuilder builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeConverter());
                     final Gson gson = builder.create();
                     String json = settings.getString("Trips", "");
-                    Type type = new TypeToken<ArrayList<Trip>>(){}.getType();
-                    List<Trip> tripList = gson.fromJson(json, type);
+                    Type typeList = new TypeToken<ArrayList<Trip>>(){}.getType();
+                    List<Trip> tripList = gson.fromJson(json, typeList);
 
-                    Expense e = new Expense(name,expenseType,currency,cost,startDate);
+                    switch (currency) {
+                        case "USD": trip.setMoneySpent(trip.getMoneySpent() + cost); break;
+                        case "CAD": cost = cost * ER.getCADtoUSD(); trip.setMoneySpent(trip.getMoneySpent() + cost); break;
+                        case "GBP": cost = cost * ER.getGBPtoUSD(); trip.setMoneySpent(trip.getMoneySpent() + cost); break;
+                        case "EUR": cost = cost * ER.getEURtoUSD(); trip.setMoneySpent(trip.getMoneySpent() + cost); break;
+                    }
+
+                    Expense e = new Expense(name,type,currency,cost,startDate);
 
                     if (setEndDate == true) {
                         e.setEndDate(endDate);
                     }
+                    if (expenseTypeSpecific != null || !expenseTypeSpecific.equals("")) {
+                        e.setTypeSpecific(expenseTypeSpecific);
+                    }
 
                     trip.addToList(e);
-                    trip.setMoneySpent(trip.getMoneySpent() + cost);
 
                     int i =0;
                     for (Trip t : tripList) {
-
                         if (t.getName().equals(trip.getName())) {
                             tripList.set(i,trip);
                             break;

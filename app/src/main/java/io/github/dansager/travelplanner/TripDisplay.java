@@ -1,19 +1,13 @@
 package io.github.dansager.travelplanner;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.dansager.travelplanner.data_structures.DateTimeConverter;
-import io.github.dansager.travelplanner.data_structures.Expense;
+import io.github.dansager.travelplanner.data_structures.ExchangeRate;
 import io.github.dansager.travelplanner.data_structures.Trip;
 
 public class TripDisplay extends AppCompatActivity {
@@ -43,6 +37,7 @@ public class TripDisplay extends AppCompatActivity {
     private static TripDisplay instance;
 
     CreateExpense pop = new CreateExpense();
+    ExchangeRate ER = new ExchangeRate();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +45,6 @@ public class TripDisplay extends AppCompatActivity {
         instance = this;
 
         setContentView(R.layout.activity_trip_display);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String tripName = getIntent().getStringExtra("value");
@@ -63,28 +57,67 @@ public class TripDisplay extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<Trip>>(){}.getType();
         tripList = gson.fromJson(json, type);
 
+        boolean delete = false;
+        prefEditor.putBoolean("delete",delete);
+        prefEditor.commit();
+
         for (Trip t : tripList) {
             if (t.getName().equals(tripName)) {
                 activeTrip = t;
             }
         }
 
-        FloatingActionButton fa = (FloatingActionButton) findViewById(R.id.create_expense);
-        fa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                pop.createDialogWindow(TripDisplay.this,activeTrip);
-            }
-        });
-
-
-
         setCardInfo();
 
         recyclerView = (RecyclerView) findViewById(R.id.display_recyclerView);
-        adapter = new TripDisplayAdapter(this, activeTrip.getList());
+        adapter = new TripDisplayAdapter(this, activeTrip.getList(),activeTrip);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_trip, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: onBackPressed(); return true;
+            case R.id.expense_create: pop.createDialogWindow(TripDisplay.this,activeTrip); return true;
+            case R.id.expense_stat:
+                Intent intent = new Intent(this,TripStats.class);
+                intent.putExtra("value",activeTrip.getName());
+                startActivity(intent);
+                return true;
+            case R.id.expense_delete:
+                boolean delete = true;
+                prefEditor.putBoolean("delete",delete);
+                prefEditor.commit();
+                Toast.makeText(instance,"Click On An Expense to Delete It",Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.expense_delete_trip:
+                SharedPreferences settings = this.getSharedPreferences("Trip_Pref", 0);
+                SharedPreferences.Editor prefEditor = settings.edit();
+                final GsonBuilder builder = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeConverter());
+                final Gson gson = builder.create();
+                String json = settings.getString("Trips", "");
+                Type type = new TypeToken<ArrayList<Trip>>(){}.getType();
+                List<Trip> tripList = gson.fromJson(json, type);
+                for (Trip t : tripList) {
+                    if (t.getName().equals(activeTrip.getName())) {
+                        tripList.remove(t);
+                        break;
+                    }
+                }
+                json = gson.toJson(tripList);
+                prefEditor.putString("Trips", json);
+                prefEditor.commit();
+                finish();
+                MainActivity.updateAdapter(tripList);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void setCardInfo () {
@@ -108,30 +141,14 @@ public class TripDisplay extends AppCompatActivity {
             displayEndDate.setText(activeTrip.getEndDate().toString("MMM d, yyyy"));
         }
 
-        String s = Integer.toString(activeTrip.getMoneySpent());
         String currency = pref.getString("pref_app_currency","Default");
-        if (currency.equals("USD")) {
-            displayCost.setText("$" + s);
-        } else if (currency.equals("CAD")) {
-            displayCost.setText("$" + s + " CAD");
-        } else if (currency.equals("GBP")) {
-            displayCost.setText("£" + s);
-        } else if (currency.equals("EUR")) {
-            displayCost.setText("€" + s);
+        switch (currency) {
+            case "USD": displayCost.setText("$" + Double.toString(round((activeTrip.getMoneySpent()),2))); break;
+            case "CAD": displayCost.setText("$" + Double.toString(round((activeTrip.getMoneySpent() * ER.getUSDtoCAD()),2)) + " CAD"); break;
+            case "GBP": displayCost.setText("£" + Double.toString(round((activeTrip.getMoneySpent() * ER.getUSDtoGBP()),2))); break;
+            case "EUR": displayCost.setText("€" + Double.toString(round((activeTrip.getMoneySpent() * ER.getUSDtoEUR()),2))); break;
         }
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     public static void updateAdapter (List<Trip> updatedList, Trip updatedTrip) {
         activeTrip = updatedTrip;
@@ -140,16 +157,22 @@ public class TripDisplay extends AppCompatActivity {
 
         pref =  PreferenceManager.getDefaultSharedPreferences(instance);
         TextView displayCost = (TextView) instance.findViewById(R.id.display_cost);
-        String s = Integer.toString(activeTrip.getMoneySpent());
+        String s = Double.toString(activeTrip.getMoneySpent());
         String currency = pref.getString("pref_app_currency","Default");
-        if (currency.equals("USD")) {
-            displayCost.setText("$" + s);
-        } else if (currency.equals("CAD")) {
-            displayCost.setText("$" + s + " CAD");
-        } else if (currency.equals("GBP")) {
-            displayCost.setText("£" + s);
-        } else if (currency.equals("EUR")) {
-            displayCost.setText("€" + s);
+        switch (currency) {
+            case "USD": displayCost.setText("$" + Double.toString(round((activeTrip.getMoneySpent()),2))); break;
+            case "CAD": displayCost.setText("$" + Double.toString(round((activeTrip.getMoneySpent() * 1.30475),2)) + " CAD"); break;
+            case "GBP": displayCost.setText("£" + Double.toString(round((activeTrip.getMoneySpent() * .771545),2))); break;
+            case "EUR": displayCost.setText("€" + Double.toString(round((activeTrip.getMoneySpent() * .860475),2))); break;
         }
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 }

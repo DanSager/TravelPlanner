@@ -2,6 +2,9 @@
     <string name="app_name">Travel Planner</string>
     <string name="action_settings">Settings</string>
     <string name="action_stats">Stats</string>
+    <string name="expense_create">Create Expense</string>
+    <string name="expense_delete">Delete Expense</string>
+    <string name="expense_trip_delete">Delete Trip</string>
     <string name="title_activity_setting">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -59,6 +62,7 @@
     <string name="recycler_time">Example Time</string>
     <string name="recycler_duration">Example Duration</string>
     <string name="recycler_money">Example $ Spent</string>
+    <string name="recycler_type_specific">Example Type</string>
 
     <!-- Strings Related to DisplayTrip -->
 

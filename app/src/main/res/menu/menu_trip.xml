@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="io.github.dansager.travelplanner.TripDisplay">
+
+    <item
+        android:id="@+id/expense_create"
+        android:title="@string/expense_create"
+        android:icon="@drawable/round_create_white_18dp"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/expense_stat"
+        android:title="@string/action_stats"
+        android:icon="@drawable/sharp_timeline_white_18dp"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/expense_delete"
+        android:title="@string/expense_delete"
+        android:icon="@drawable/sharp_timeline_white_18dp" />
+
+    <item
+        android:id="@+id/expense_delete_trip"
+        android:title="@string/expense_trip_delete"
+        android:icon="@drawable/round_settings_white_18dp" />
+
+</menu>

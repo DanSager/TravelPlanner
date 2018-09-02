@@ -28,6 +28,8 @@
                 android:value="io.github.dansager.travelplanner.MainActivity" />
         </activity>
         <activity android:name=".TripDisplay" />
+        <activity android:name=".TripStats" />
+        <activity android:name=".OverallStats" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

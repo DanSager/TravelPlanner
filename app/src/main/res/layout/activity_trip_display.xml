@@ -20,7 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
+                android:textSize="40sp"
                 android:text="@string/display_name" />
 
             <TextView
@@ -28,6 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textSize="25sp"
+                android:textColor="@color/hintText"
                 android:text="@string/display_start_date" />
 
             <TextView
@@ -35,6 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textSize="25sp"
+                android:textColor="@color/hintText"
                 android:text="@string/display_end_date" />
 
             <TextView
@@ -42,14 +47,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textSize="20sp"
+                android:textColor="@color/hintText"
                 android:text="@string/display_cost" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/create_expense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                card_view:srcCompat="@drawable/round_create_white_48dp" />
 
         </LinearLayout>
 
