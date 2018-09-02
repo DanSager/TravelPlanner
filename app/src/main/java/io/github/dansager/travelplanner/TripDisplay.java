@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -148,6 +149,18 @@ public class TripDisplay extends AppCompatActivity {
             case "GBP": displayCost.setText("£" + Double.toString(round((activeTrip.getMoneySpent() * ER.getUSDtoGBP()),2))); break;
             case "EUR": displayCost.setText("€" + Double.toString(round((activeTrip.getMoneySpent() * ER.getUSDtoEUR()),2))); break;
         }
+
+        TextView budgetText = findViewById(R.id.display_budget);
+        if (activeTrip.getBudget() == 0.0 || activeTrip.getBudget() == 0) {
+            budgetText.setVisibility(View.GONE);
+        } else {
+            switch (currency) {
+                case "USD": budgetText.setText("$" + Double.toString(round((activeTrip.getBudget()),2))); break;
+                case "CAD": budgetText.setText("$" + Double.toString(round((activeTrip.getBudget() * ER.getUSDtoCAD()),2)) + " CAD"); break;
+                case "GBP": budgetText.setText("£" + Double.toString(round((activeTrip.getBudget() * ER.getUSDtoGBP()),2))); break;
+                case "EUR": budgetText.setText("€" + Double.toString(round((activeTrip.getBudget() * ER.getUSDtoEUR()),2))); break;
+            }
+        }
     }
 
     public static void updateAdapter (List<Trip> updatedList, Trip updatedTrip) {
@@ -164,6 +177,17 @@ public class TripDisplay extends AppCompatActivity {
             case "CAD": displayCost.setText("$" + Double.toString(round((activeTrip.getMoneySpent() * 1.30475),2)) + " CAD"); break;
             case "GBP": displayCost.setText("£" + Double.toString(round((activeTrip.getMoneySpent() * .771545),2))); break;
             case "EUR": displayCost.setText("€" + Double.toString(round((activeTrip.getMoneySpent() * .860475),2))); break;
+        }
+        TextView budgetText = instance.findViewById(R.id.display_budget);
+        if (activeTrip.getBudget() == 0.0 || activeTrip.getBudget() == 0) {
+            budgetText.setVisibility(View.GONE);
+        } else {
+            switch (currency) {
+                case "USD": budgetText.setText("$" + Double.toString(round((activeTrip.getBudget()),2))); break;
+                case "CAD": budgetText.setText("$" + Double.toString(round((activeTrip.getBudget() * 1.30475),2)) + " CAD"); break;
+                case "GBP": budgetText.setText("£" + Double.toString(round((activeTrip.getBudget() * .771545),2))); break;
+                case "EUR": budgetText.setText("€" + Double.toString(round((activeTrip.getBudget() * .860475),2))); break;
+            }
         }
     }
 

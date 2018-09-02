@@ -37,6 +37,8 @@ import io.github.dansager.travelplanner.data_structures.ExchangeRate;
 import io.github.dansager.travelplanner.data_structures.Expense;
 import io.github.dansager.travelplanner.data_structures.Trip;
 
+import static io.github.dansager.travelplanner.TripDisplay.round;
+
 public class CreateExpense {
     
     private static Dialog create_window;
@@ -381,14 +383,11 @@ public class CreateExpense {
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mCtx);
         currency = pref.getString("pref_app_currency","Default");
-        if (currency.equals("USD")) {
-            currencyText.setText("USD");
-        } else if (currency.equals("CAD")) {
-            currencyText.setText("CAD");
-        } else if (currency.equals("GBP")) {
-            currencyText.setText("GBP");
-        } else if (currency.equals("EUR")) {
-            currencyText.setText("EUR");
+        switch (currency) {
+            case "USD": currencyText.setText("USD"); break;
+            case "CAD": currencyText.setText("CAD"); break;
+            case "GBP": currencyText.setText("GBP"); break;
+            case "EUR": currencyText.setText("EUR"); break;
         }
         currencyText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -398,7 +397,6 @@ public class CreateExpense {
                 buildee.setItems(R.array.pref_app_currency_entries, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String toString = Integer.toString(i);
                         switch (i) {
                             case 0: currencyText.setText("USD"); currency = "USD"; break;
                             case 1: currencyText.setText("CAD"); currency = "CAD"; break;
@@ -415,7 +413,6 @@ public class CreateExpense {
 
                 AlertDialog dialog = buildee.create();
                 dialog.show();
-
             }
         });
     }
@@ -475,6 +472,10 @@ public class CreateExpense {
                     }
                     if (expenseTypeSpecific != null || !expenseTypeSpecific.equals("")) {
                         e.setTypeSpecific(expenseTypeSpecific);
+                    }
+
+                    if (trip.getBudget() != 0.0 || trip.getBudget() != 0) {
+                        trip.setBudget(trip.getBudget() - round(cost,2));
                     }
 
                     trip.addToList(e);

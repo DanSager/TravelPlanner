@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -41,18 +42,23 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.github.dansager.travelplanner.data_structures.DateTimeConverter;
+import io.github.dansager.travelplanner.data_structures.ExchangeRate;
 import io.github.dansager.travelplanner.data_structures.Trip;
 
 public class CreateTrip {
 
     MainActivity mainActivity;
+    ExchangeRate ER = new ExchangeRate();
 
     private DatePickerDialog.OnDateSetListener startDateTextListener;
     private DatePickerDialog.OnDateSetListener endDateTextListener;
     private TextView startDateText;
     private TextView endDateText;
+    private TextView currencySelector;
     DateTime tripStartDate;
     DateTime tripEndDate;
+    String currency = "";
+    double cost = 0.0;
 
     public void createDialogWindow (final Context context) {
         Dialog create_window = new Dialog(context);
@@ -137,6 +143,42 @@ public class CreateTrip {
             }
         };
 
+        currencySelector = create_window.findViewById(R.id.create_trip_currency);
+        pref = PreferenceManager.getDefaultSharedPreferences(context);
+        currency = pref.getString("pref_app_currency","Default");
+        switch (currency) {
+            case "USD": currencySelector.setText("USD"); break;
+            case "CAD": currencySelector.setText("CAD"); break;
+            case "GBP": currencySelector.setText("GBP"); break;
+            case "EUR": currencySelector.setText("EUR"); break;
+        }
+        currencySelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder buildee = new AlertDialog.Builder(create_window.getContext());
+                buildee.setTitle("Currency");
+                buildee.setItems(R.array.pref_app_currency_entries, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case 0: currencySelector.setText("USD"); currency = "USD"; break;
+                            case 1: currencySelector.setText("CAD"); currency = "CAD"; break;
+                            case 2: currencySelector.setText("GBP"); currency = "GBP"; break;
+                            case 3: currencySelector.setText("EUR"); currency = "EUR"; break;
+                        }
+                    }
+                } );
+                buildee.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                AlertDialog dialog = buildee.create();
+                dialog.show();
+            }
+        });
+
         cancelButtonListener(context,create_window);
         createButtonListener(context,create_window);
 
@@ -186,6 +228,18 @@ public class CreateTrip {
                 } else {
 
                     Trip newTrip = new Trip(name,tripStartDate,tripEndDate);
+
+                    EditText budgetText = create_window.findViewById(R.id.create_trip_cost);
+                    String inT = budgetText.getText().toString();
+                    cost = Double.parseDouble(inT);
+                    if (cost != 0.0 || cost != 0) {
+                        switch (currency) {
+                            case "USD": newTrip.setBudget(cost); break;
+                            case "CAD": newTrip.setBudget(cost * ER.getCADtoUSD()); break;
+                            case "GBP": newTrip.setBudget(cost * ER.getGBPtoUSD()); break;
+                            case "EUR": newTrip.setBudget(cost * ER.getEURtoUSD()); break;
+                        }
+                    }
 
                     if (tripList == null) {
                         tripList = new ArrayList<Trip>();

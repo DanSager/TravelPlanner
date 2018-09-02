@@ -113,6 +113,7 @@ public class TripDisplayAdapter extends RecyclerView.Adapter<TripDisplayAdapter.
                         if (t.getName().equals(trip.getName())) {
                             for (Expense expense : t.getList()) {
                                 if (expense.getName().equals(e.getName())) {
+                                    t.setBudget(t.getBudget() + e.getCost());
                                     t.getList().remove(expense);
                                     t.setMoneySpent(t.getMoneySpent() - e.getCost());
                                     json = gson.toJson(tripList);

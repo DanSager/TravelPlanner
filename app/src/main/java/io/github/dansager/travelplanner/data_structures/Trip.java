@@ -12,7 +12,8 @@ public class Trip {
     private String name = "";
     private DateTime startDate;
     private DateTime endDate;
-    private double MoneySpent = 0;
+    private double moneySpent = 0.0;
+    private double budget = 0.0;
     private List<Expense> list = new ArrayList<Expense>();
 
     public Trip(String name,DateTime startDate,DateTime endDate) {
@@ -26,7 +27,7 @@ public class Trip {
     }
 
     public double setMoneySpent (double i) {
-        return MoneySpent = i;
+        return moneySpent = i;
     }
 
     public DateTime setStartDate (DateTime d) {
@@ -36,8 +37,10 @@ public class Trip {
         return endDate = d;
     }
 
+    public double setBudget (double i) { return budget = i; }
+
     public double getMoneySpent() {
-        return MoneySpent;
+        return moneySpent;
     }
 
     public String getName () {
@@ -50,6 +53,8 @@ public class Trip {
     public DateTime getEndDate () {
         return endDate;
     }
+
+    public double getBudget () { return budget; }
 
     public List<Expense> getList () {
         return list;
