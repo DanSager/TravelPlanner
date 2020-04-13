@@ -2,6 +2,7 @@
 Ditch the notepad. Plan and organize trips like never before.
 
 Travel Planner is a virtual notepad for planning, organizing, budgeting upcoming trips and much more.
+https://play.google.com/store/apps/details?id=io.github.dansager.travelplanner
 
 KEY FEATURES:
 
